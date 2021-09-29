@@ -1,0 +1,23 @@
+.container-fluid{
+    display: flex;
+    justify-content: center;
+}
+
+nav{
+    margin-top: 5%;
+    width: 50%;
+    background-color: #b3ddfa;
+    border-radius: 10px;
+}
+
+.nav-item{
+    border: 1px solid #9ecdf1;
+}
+
+div.col-sm-6 {
+    border: 2px solid #9ecdf1;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
