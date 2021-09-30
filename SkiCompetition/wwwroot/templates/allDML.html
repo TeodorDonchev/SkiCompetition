@@ -1,0 +1,77 @@
+﻿<div class="container-fluid">
+    <nav class="navbar navbar-expand-sm navbar-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-fill w-100">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Competitions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Competitors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Teams</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ranks</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+<div class="container-fluid">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Competitor</th>
+                    <th scope="col">Team</th>
+                    <th scope="col">Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Pesho Peshovski</td>
+                    <td>Peshovski Team</td>
+                    <td>77</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Petranka Petranova</td>
+                    <td>Peshovski Team</td>
+                    <td>56</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Gosho Goshev</td>
+                    <td>Bulgarian National Team</td>
+                    <td>99</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-3"></div>
+</div>
+
+<div id="ts-example">
+    <br />
+    <button type="button" class="btn btn-primary btn-md" onclick="TSButton()">
+        Click Me
+    </button>
+</div>
+
+<span data-bind="text: currentTemplate()"></span>
+
+<script src="/js/app.js"></script>
+<script src="/js/test.js"></script>

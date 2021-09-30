@@ -1,11 +1,7 @@
 ﻿import * as ko from 'knockout';
 
-import {
-    Observable
-} from 'knockout';
-
-class TaskViewModel {
-    currentTemplate: Observable<string>
+public class TaskViewModel {
+    currentTemplate: KnockoutObservable<string>;
 
     constructor(currentTemplate: string) {
 
@@ -15,4 +11,4 @@ class TaskViewModel {
 }
 
 
-ko.applyBindings(new TaskViewModel('test'));
+//ko.applyBindings(new TaskViewModel('test'));

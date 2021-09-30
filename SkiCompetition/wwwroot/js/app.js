@@ -1,18 +1,9 @@
-function TSButton() {
-    var name = "Fred";
-    document.getElementById("ts-example").innerHTML = greeter(user);
-}
-var Student = /** @class */ (function () {
-    function Student(firstName, middleInitial, lastName) {
-        this.firstName = firstName;
-        this.middleInitial = middleInitial;
-        this.lastName = lastName;
-        this.fullName = firstName + " " + middleInitial + " " + lastName;
+var App = /** @class */ (function () {
+    function App() {
     }
-    return Student;
+    App.prototype.loaded = function () {
+    };
+    return App;
 }());
-function greeter(person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-var user = new Student("Fred", "M.", "Smith");
+window.app = new App();
 //# sourceMappingURL=app.js.map
