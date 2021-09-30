@@ -5,10 +5,6 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "jquery": [ "wwwroot/lib/@types/jquery" ]
-    },
     "target": "es5",
     "outDir": "wwwroot/js"
   },

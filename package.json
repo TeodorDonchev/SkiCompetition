@@ -1,0 +1,26 @@
+{
+  "name": "SkiCompetition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "knockout": "^3.5.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeodorDonchev/SkiCompetition.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TeodorDonchev/SkiCompetition/issues"
+  },
+  "homepage": "https://github.com/TeodorDonchev/SkiCompetition#readme"
+}
