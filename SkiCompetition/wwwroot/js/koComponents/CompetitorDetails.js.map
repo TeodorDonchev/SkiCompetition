@@ -1,0 +1,1 @@
+{"version":3,"file":"CompetitorDetails.js","sourceRoot":"","sources":["../../scripts/koComponents/CompetitorDetails.ts"],"names":[],"mappings":"AACA,OAAO,QAAQ,MAAM,oCAAoC,CAAC;AAE1D,MAAM,iBAAiB;IAGnB,YAAY,MAA8B;QACtC,IAAI,CAAC,UAAU,GAAG,MAAM,CAAC,MAAM,CAAC;IACpC,CAAC;CACJ;AAED,gFAAgF;AAChF,eAAe,EAAE,SAAS,EAAE,iBAAiB,EAAE,QAAQ,EAAE,QAAQ,EAAE,CAAC"}
