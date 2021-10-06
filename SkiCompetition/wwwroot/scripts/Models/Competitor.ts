@@ -1,5 +1,6 @@
-﻿import Competition from './Competition';
-import Team from '../Models/Team';
+﻿import Competition from './Competition.js';
+import Team from '../Models/Team.js';
+import BaseModel from './BaseModel.js';
 
 class Competitor extends BaseModel {
     private _id: number;
@@ -11,14 +12,15 @@ class Competitor extends BaseModel {
     private _time: Date;
     private _competitions: Array<Competition>;
 
-    constructor(id: number, firstName: string, lastName: string, sex: string, team: Team) {
+    //remove points from constructor later
+    constructor(id: number, firstName: string, lastName: string, sex: string, team: Team, points: number) {
         super();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
         this.team = team;
-        this._points = 0;
+        this._points = points;
         this._time = new Date();
         this._competitions = [];
     }

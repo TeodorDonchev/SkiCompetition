@@ -1,1 +1,1 @@
-{"version":3,"file":"BaseModel.js","sourceRoot":"","sources":["../../scripts/Models/BaseModel.ts"],"names":[],"mappings":"AAAA,MAAe,SAAS;IACb,IAAI;QACP,OAAO,CAAC,GAAG,CAAC,QAAQ,CAAC,CAAC;IAC1B,CAAC;CACJ"}
+{"version":3,"file":"BaseModel.js","sourceRoot":"","sources":["../../scripts/Models/BaseModel.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAgB,SAAS;IAC5B,IAAI;QACP,OAAO,CAAC,GAAG,CAAC,QAAQ,CAAC,CAAC;IAC1B,CAAC;CACJ"}

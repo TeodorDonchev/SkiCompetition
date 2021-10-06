@@ -1,4 +1,4 @@
-class BaseModel {
+export default class BaseModel {
     save() {
         console.log('saved!');
     }

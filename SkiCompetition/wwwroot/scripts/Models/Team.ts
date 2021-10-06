@@ -1,4 +1,5 @@
-﻿import Competitor from './Competitor';
+﻿import Competitor from './Competitor.js';
+import BaseModel from './BaseModel.js';
 
 class Team extends BaseModel{
     private _id: number;
@@ -6,12 +7,13 @@ class Team extends BaseModel{
     private _competitors: Array<Competitor>;
     private _points: number;
 
-    constructor(id: number, name: string) {
+    //remove points from constructor later
+    constructor(id: number, name: string, points: number) {
         super();
         this.id = id;
         this.name = name;
         this._competitors = [];
-        this._points = 0;
+        this._points = points;
     }
 
     public get id() {

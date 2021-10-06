@@ -1,10 +1,12 @@
+import BaseModel from './BaseModel.js';
 class Team extends BaseModel {
-    constructor(id, name) {
+    //remove points from constructor later
+    constructor(id, name, points) {
         super();
         this.id = id;
         this.name = name;
         this._competitors = [];
-        this._points = 0;
+        this._points = points;
     }
     get id() {
         return this._id;

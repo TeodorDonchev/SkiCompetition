@@ -1,4 +1,5 @@
-﻿import Competitor from './Competitor';
+﻿import Competitor from './Competitor.js';
+import BaseModel from './BaseModel.js';
 
 class Competition extends BaseModel {
     private _id: number;
@@ -8,15 +9,15 @@ class Competition extends BaseModel {
     private _isFinished: boolean;
     private _competitors: Array<Competitor>;
 
-    //remove competitors from constructor later
-    constructor(id: number, name: string, date: Date, location: string, competitors: Array<Competitor>) {
+    //remove competitors, isFinished from constructor later
+    constructor(id: number, name: string, date: Date, location: string, competitors: Array<Competitor>, isFinished: boolean) {
         super();
         this.id = id;
         this.name = name;
         this.date = date;
         this.location = location;
         this._competitors = competitors;
-        this._isFinished = false;             
+        this._isFinished = isFinished;             
     }
    
     //rearange property, get, set

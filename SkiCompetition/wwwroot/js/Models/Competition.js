@@ -1,13 +1,14 @@
+import BaseModel from './BaseModel.js';
 class Competition extends BaseModel {
-    //remove competitors from constructor later
-    constructor(id, name, date, location, competitors) {
+    //remove competitors, isFinished from constructor later
+    constructor(id, name, date, location, competitors, isFinished) {
         super();
         this.id = id;
         this.name = name;
         this.date = date;
         this.location = location;
         this._competitors = competitors;
-        this._isFinished = false;
+        this._isFinished = isFinished;
     }
     //rearange property, get, set
     get id() {
