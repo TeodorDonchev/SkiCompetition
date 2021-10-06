@@ -1,0 +1,1 @@
+{"version":3,"file":"CompetitionsDeck.js","sourceRoot":"","sources":["../../scripts/koComponents/CompetitionsDeck.ts"],"names":[],"mappings":"AACA,OAAO,QAAQ,MAAM,uBAAuB,CAAC;AAE7C,MAAM,cAAc;IAGhB,YAAY,MAA0C;QAClD,IAAI,CAAC,WAAW,GAAG,EAAE,CAAC,eAAe,CAAC,MAAM,CAAC,WAAW,CAAC,CAAC;IAC9D,CAAC;CACJ;AAED,gFAAgF;AAChF,eAAe,EAAE,SAAS,EAAE,cAAc,EAAE,QAAQ,EAAE,QAAQ,EAAE,CAAC"}

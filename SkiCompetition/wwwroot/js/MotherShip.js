@@ -1,3 +1,4 @@
+import Service from "./service";
 class ContentVM {
     constructor(Name) {
         this.Name = Name;
@@ -12,6 +13,9 @@ class Deck {
 }
 export default class MotherShipVM {
     constructor() {
+        this.Service = new Service();
+        this.Competitors = this.Service.competitors;
+        this.Competitions = this.Service.competitions;
         this.Decks = [
             new Deck("Competitions"),
             new Deck("Competitors"),

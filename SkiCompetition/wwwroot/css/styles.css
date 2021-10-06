@@ -1,23 +1,9 @@
-.container-fluid{
-    display: flex;
-    justify-content: center;
+.custom.nav-item.active
+{
+    border:1px solid red;
 }
 
-nav{
-    margin-top: 5%;
-    width: 50%;
-    background-color: #b3ddfa;
-    border-radius: 10px;
-}
-
-.nav-item{
+.custom.col-sm-6.offset-md-3 {
     border: 1px solid #9ecdf1;
-}
-
-div.col-sm-6 {
-    border: 2px solid #9ecdf1;
     border-radius: 10px;
-    display: flex;
-    justify-content: space-evenly;
 }
-

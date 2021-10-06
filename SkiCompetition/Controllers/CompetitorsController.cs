@@ -11,11 +11,11 @@ namespace SkiCompetition.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Competitors : ControllerBase
+    public class CompetitorsController : ControllerBase
     {
         private readonly SkiCompetitionContext _context;
 
-        public Competitors(SkiCompetitionContext context)
+        public CompetitorsController(SkiCompetitionContext context)
         {
             _context = context;
         }
@@ -46,7 +46,7 @@ namespace SkiCompetition.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompetitor(int id, Competitor competitor)
         {
-            if (id != competitor.Id)
+            if (id != competitor.CompetitorID)
             {
                 return BadRequest();
             }
@@ -80,7 +80,7 @@ namespace SkiCompetition.Controllers
             _context.Competitors.Add(competitor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCompetitor", new { id = competitor.Id }, competitor);
+            return CreatedAtAction("GetCompetitor", new { id = competitor.CompetitorID }, competitor);
         }
 
         // DELETE: api/Competitors/5
@@ -101,7 +101,7 @@ namespace SkiCompetition.Controllers
 
         private bool CompetitorExists(int id)
         {
-            return _context.Competitors.Any(e => e.Id == id);
+            return _context.Competitors.Any(e => e.CompetitorID == id);
         }
     }
 }
