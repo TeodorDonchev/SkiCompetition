@@ -14,11 +14,11 @@ class Deck {
 export default class MotherShipVM {
     constructor() {
         this.Service = new Service();
-        this.Competitors = this.Service.competitors;
-        this.Competitions = ko.observableArray(this.Service.competitions);
-        this.OrderedCompetitors = ko.observableArray(this.Service.orderedFemaleCompetitors);
-        this.OrderedTeams = this.Service.orderedTeams;
-        this.Teams = this.Service.teams;
+        this.Competitors = this.Service.getAllCompetitors();
+        this.Competitions = ko.observableArray(this.Service.getAllCompetitions());
+        this.SortedCompetitors = ko.observableArray(this.Service.getSortedFemaleCompetitors());
+        this.SortedTeams = this.Service.getSortedTeams();
+        this.Teams = this.Service.getAllTeams();
         this.Decks = [
             new Deck("Competitions"),
             new Deck("Competitors"),
@@ -29,23 +29,21 @@ export default class MotherShipVM {
         this.ActiveDeck = ko.observable(this.Decks[0]);
     }
     changeFilterCompetition(data, event) {
-        console.log(event);
+        let element = event.target;
         if (event.target.outerText === 'PAST') {
-            this.Competitions(this.Service.pastCompetitions);
+            this.Competitions(this.Service.getPastCompetitions());
         }
         else {
-            this.Competitions(this.Service.upcomingCompetitions);
+            this.Competitions(this.Service.getUpcomingCompetitions());
         }
     }
     changeFilterCompetitor(data, event) {
-        console.log(this);
-        console.log('data', data);
-        console.log('event', event.target.outerText);
-        if (event.target.outerText === 'FEMALE') {
-            this.OrderedCompetitors(this.Service.orderedFemaleCompetitors);
+        let element = event.target;
+        if (element.outerText === 'FEMALE') {
+            this.SortedCompetitors(this.Service.getSortedFemaleCompetitors());
         }
         else {
-            this.OrderedCompetitors(this.Service.orderedMaleCompetitors);
+            this.SortedCompetitors(this.Service.getSortedMaleCompetitors());
         }
     }
 }

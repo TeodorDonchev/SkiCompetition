@@ -1,6 +1,11 @@
-.custom.nav-item.active
-{
-    border:1px solid blue;
+.custom.d-flex.align-items-center.justify-content-center.bg-primary{
+    height: 42px;
+}
+
+.custom.nav-item.active {
+    border: 1px solid blue;
+    background-color: #0b5ed7;
+    color: #ffffff;
 }
 
 .custom.col-sm-6 {
@@ -40,7 +45,7 @@
     display: inline-block;
 }
 
-.search{
+.search {
     margin-bottom: 2%;
 }
 
