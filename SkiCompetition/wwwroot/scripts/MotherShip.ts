@@ -49,11 +49,15 @@ export default class MotherShipVM {
     changeFilterCompetition(data, event) {
         let element = event.target;
 
-        if (event.target.outerText === 'PAST') {
+        if (element.outerText === 'PAST') {
             this.Competitions(this.Service.getPastCompetitions());
         } else {
             this.Competitions(this.Service.getUpcomingCompetitions());
         }
+    }
+
+    clearFilterCompetition() {
+        this.Competitions(this.Service.getAllCompetitions());
     }
 
     changeFilterCompetitor(data, event) {

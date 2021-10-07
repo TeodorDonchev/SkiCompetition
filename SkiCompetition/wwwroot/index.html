@@ -24,26 +24,6 @@
 </head>
 
 <body onload="startUp()">
-    <!--<div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6 .offset-md-3" >
-                <nav class="navbar navbar-expand-sm navbar-light">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="nav nav-tabs" id="myTab" data-bind="foreach: Decks">
-                            <li class="active" data-bind="click: $parent.ActiveDeck">
-                                <button class="nav-link" data-bs-toggle="tab" type="button" role="tab" data-bind="text: $data.Name"></button>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>-->
     <div class="custom d-flex align-items-center justify-content-center bg-primary">
         <div class="container-fluid d-flex justify-content-center">
             <ul class="nav" data-bind="foreach: Decks">
@@ -53,19 +33,23 @@
             </ul>
         </div>
     </div>
+
     <!--ko with: ActiveDeck -->
-    <div data-bind="template:  contentVM.templateName">
- 
-    </div>
+    <div data-bind="template:  contentVM.templateName"></div>
     <!--/ko-->
 
     <script type="text/html" id="Competitions-template">
         <div class="row d-flex justify-content-center">
             <div class="custom col-sm-6">
                 <div class="custom controllers d-flex justify-content-between">
-                    <div class="filters">
+                    <div class="filters d-flex justify-content-between align-items-center">
+                        <div>
                         <button type="button" class="custom btn btn-outline-primary rounded-pill shadow-none" data-bind="click: $parent.changeFilterCompetition.bind($parent), css:{'active': $parent.Competitions() == $parent.Service.getPastCompetitions()}">PAST</button>
                         <button type="button" class="custom btn btn-outline-primary rounded-pill shadow-none" data-bind="click: $parent.changeFilterCompetition.bind($parent), css:{'active': $parent.Competitions() == $parent.Service.getUpcomingCompetitions()}">UPCOMING</button>
+                        </div
+>
+
+                        <button type="button" class="clear-filter btn btn-primary rounded-pill shadow-none" data-bind="click: $parent.clearFilterCompetition.bind($parent), visible: $parent.Competitions() != $parent.Service.getAllCompetitions()">X</button>
                     </div>
                     <div class="buttons">
                         <div class="search">
