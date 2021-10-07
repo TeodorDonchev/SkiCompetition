@@ -1,11 +1,19 @@
 .custom.d-flex.align-items-center.justify-content-center.bg-primary{
-    height: 42px;
+    height: 70px;
+    font-size: 18px;
+    background-color: #5890FF !important;
 }
 
-.custom.nav-item.active {
-    border: 1px solid blue;
-    background-color: #0b5ed7;
-    color: #ffffff;
+.custom.nav{
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.custom.nav-item.active a {
+    /*background-color: #0b5ed7;*/
+    /*color: black !important;*/
+    background-color: #7ea6f8;
 }
 
 .custom.col-sm-6 {

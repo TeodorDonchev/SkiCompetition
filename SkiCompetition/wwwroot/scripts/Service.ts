@@ -29,12 +29,6 @@ class Service {
             new Competition(2, 'Borovets Cup', new Date(), 'Borovets', this._competitors,false),
         ];
 
-        this._sortedFemaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Female').sort((a, b) => b.points - a.points);
-        this._sortedMaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Male').sort((a, b) => b.points - a.points);
-        this._pastCompetitions = this._competitions.filter(competition => competition.isFinished);
-        this._upcomingCompetitions = this._competitions.filter(competition => !competition.isFinished);
-        this._sortedTeams = [...this._teams].sort((a, b) => b.points - a.points);
-
     }
 
     getAllCompetitions(): Array<Competition>{
@@ -42,10 +36,12 @@ class Service {
     }
 
     getPastCompetitions(): Array<Competition> {
+        this._pastCompetitions = this._competitions.filter(competition => competition.isFinished);
         return this._pastCompetitions;
     }
 
     getUpcomingCompetitions(): Array<Competition> {
+        this._upcomingCompetitions = this._competitions.filter(competition => !competition.isFinished);
         return this._upcomingCompetitions;
     }
 
@@ -54,6 +50,7 @@ class Service {
     }
 
     getSortedTeams(): Array<Team> {
+        this._sortedTeams = [...this._teams].sort((a, b) => b.points - a.points);
         return this._sortedTeams;
     }
 
@@ -62,11 +59,17 @@ class Service {
     }
 
     getSortedFemaleCompetitors(): Array<Competitor> {
+        this._sortedFemaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Female').sort((a, b) => b.points - a.points);
         return this._sortedFemaleCompetitors;
     }
 
     getSortedMaleCompetitors(): Array<Competitor> {
+        this._sortedMaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Male').sort((a, b) => b.points - a.points);
         return this._sortedMaleCompetitors;
+    }
+
+    addCompetition(competition: Competition) {
+        this._competitions.push(competition);   
     }
 
 }

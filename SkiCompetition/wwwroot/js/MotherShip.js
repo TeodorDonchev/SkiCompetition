@@ -1,3 +1,4 @@
+import Competition from "./Models/Competition.js";
 import Service from "./Service.js";
 class ContentVM {
     constructor(Name) {
@@ -19,6 +20,9 @@ export default class MotherShipVM {
         this.SortedCompetitors = ko.observableArray(this.Service.getSortedFemaleCompetitors());
         this.SortedTeams = this.Service.getSortedTeams();
         this.Teams = this.Service.getAllTeams();
+        this.name = ko.observable();
+        this.location = ko.observable();
+        this.date = ko.observable();
         this.Decks = [
             new Deck("Competitions"),
             new Deck("Competitors"),
@@ -36,6 +40,11 @@ export default class MotherShipVM {
         else {
             this.Competitions(this.Service.getUpcomingCompetitions());
         }
+    }
+    addCompetition(formElement) {
+        this.competition = new Competition(1, this.name(), this.date(), this.location(), [], false);
+        this.Service.addCompetition(this.competition);
+        this.Competitions(this.Service.getAllCompetitions());
     }
     clearFilterCompetition() {
         this.Competitions(this.Service.getAllCompetitions());

@@ -27,6 +27,10 @@ export default class MotherShipVM {
     Teams: Array<Team>;
     Decks: Array<Deck>;
     ActiveDeck: KnockoutObservable<Deck>;
+    competition: Competition;
+    name: KnockoutObservable<string>;
+    location: KnockoutObservable<string>;
+    date: KnockoutObservable<Date>;
 
     constructor() {
         this.Service = new Service();
@@ -35,6 +39,10 @@ export default class MotherShipVM {
         this.SortedCompetitors = ko.observableArray(this.Service.getSortedFemaleCompetitors());
         this.SortedTeams = this.Service.getSortedTeams();
         this.Teams = this.Service.getAllTeams();
+
+        this.name = ko.observable();
+        this.location = ko.observable();
+        this.date = ko.observable();
 
         this.Decks = [
             new Deck("Competitions"),
@@ -54,6 +62,12 @@ export default class MotherShipVM {
         } else {
             this.Competitions(this.Service.getUpcomingCompetitions());
         }
+    }
+
+    addCompetition(formElement) {
+        this.competition = new Competition(1, this.name(), this.date(), this.location(), [], false);
+        this.Service.addCompetition(this.competition);
+        this.Competitions(this.Service.getAllCompetitions());
     }
 
     clearFilterCompetition() {

@@ -17,35 +17,38 @@ class Service {
             new Competition(1, 'World Cup', new Date(), 'Bansko', this._competitors, true),
             new Competition(2, 'Borovets Cup', new Date(), 'Borovets', this._competitors, false),
         ];
-        this._sortedFemaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Female').sort((a, b) => b.points - a.points);
-        this._sortedMaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Male').sort((a, b) => b.points - a.points);
-        this._pastCompetitions = this._competitions.filter(competition => competition.isFinished);
-        this._upcomingCompetitions = this._competitions.filter(competition => !competition.isFinished);
-        this._sortedTeams = [...this._teams].sort((a, b) => b.points - a.points);
     }
     getAllCompetitions() {
         return this._competitions;
     }
     getPastCompetitions() {
+        this._pastCompetitions = this._competitions.filter(competition => competition.isFinished);
         return this._pastCompetitions;
     }
     getUpcomingCompetitions() {
+        this._upcomingCompetitions = this._competitions.filter(competition => !competition.isFinished);
         return this._upcomingCompetitions;
     }
     getAllTeams() {
         return this._teams;
     }
     getSortedTeams() {
+        this._sortedTeams = [...this._teams].sort((a, b) => b.points - a.points);
         return this._sortedTeams;
     }
     getAllCompetitors() {
         return this._competitors;
     }
     getSortedFemaleCompetitors() {
+        this._sortedFemaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Female').sort((a, b) => b.points - a.points);
         return this._sortedFemaleCompetitors;
     }
     getSortedMaleCompetitors() {
+        this._sortedMaleCompetitors = this._competitors.filter(competitor => competitor.sex === 'Male').sort((a, b) => b.points - a.points);
         return this._sortedMaleCompetitors;
+    }
+    addCompetition(competition) {
+        this._competitions.push(competition);
     }
 }
 export default Service;
