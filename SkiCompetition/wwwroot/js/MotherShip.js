@@ -34,17 +34,25 @@ export default class MotherShipVM {
     }
     changeFilterCompetition(data, event) {
         let element = event.target;
-        if (element.outerText === 'PAST') {
+        if (element.outerText === 'FINISHED') {
             this.Competitions(this.Service.getPastCompetitions());
         }
         else {
             this.Competitions(this.Service.getUpcomingCompetitions());
         }
     }
+    addTeam(formElement) {
+        //TODO
+    }
     addCompetition(formElement) {
         this.competition = new Competition(1, this.name(), this.date(), this.location(), [], false);
         this.Service.addCompetition(this.competition);
         this.Competitions(this.Service.getAllCompetitions());
+    }
+    addCompetitor(formElement) {
+        let data = new FormData(formElement);
+        console.log(data);
+        console.log(formElement);
     }
     clearFilterCompetition() {
         this.Competitions(this.Service.getAllCompetitions());

@@ -49,6 +49,10 @@ class Service {
         return this._teams;
     }
 
+    getTeamById(id: number) {
+        return this._teams.filter((team) => team.id === id)[0];
+    }
+
     getSortedTeams(): Array<Team> {
         this._sortedTeams = [...this._teams].sort((a, b) => b.points - a.points);
         return this._sortedTeams;
