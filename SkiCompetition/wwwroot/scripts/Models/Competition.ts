@@ -7,16 +7,16 @@ class Competition extends BaseModel {
     private _date: Date;
     private _location: string;
     private _isFinished: boolean;
-    private _competitors: Array<Competitor>;
+    private _competitors: Array<number>;
 
     //remove competitors, isFinished from constructor later
-    constructor(id: number, name: string, date: Date, location: string, competitors: Array<Competitor>, isFinished: boolean) {
+    constructor(id: number, name: string, date: Date, location: string, competitorIds: Array<number>, isFinished: boolean) {
         super();
         this.id = id;
         this.name = name;
         this.date = date;
         this.location = location;
-        this._competitors = competitors;
+        this._competitors = competitorIds;
         this._isFinished = isFinished;             
     }
    
@@ -62,7 +62,7 @@ class Competition extends BaseModel {
     }
 
     public addCompetitor(competitor: Competitor) {
-        this._competitors.push(competitor);
+        this._competitors.push(competitor.id);
     }
     
 }

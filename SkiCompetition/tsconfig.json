@@ -6,7 +6,7 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "es6",
-    "outDir": "wwwroot/js",
+    "outDir": "wwwroot/Generated Files",
     "moduleResolution": "Node"
 
   },

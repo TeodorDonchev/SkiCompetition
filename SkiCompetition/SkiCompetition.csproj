@@ -15,9 +15,6 @@
   <ItemGroup>
     <None Include="wwwroot\scripts\startUp.js" />
     <None Include="wwwroot\scripts\startUp.js.map" />
-    <None Include="wwwroot\scripts\koComponents\templates\AllCompetitors.html" />
-    <None Include="wwwroot\scripts\koComponents\templates\allDML.html" />
-    <None Include="wwwroot\scripts\koComponents\templates\CompetitorDetails.html" />
   </ItemGroup>
 
   <ItemGroup>

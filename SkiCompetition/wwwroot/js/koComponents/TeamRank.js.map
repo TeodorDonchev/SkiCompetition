@@ -1,1 +1,0 @@
-{"version":3,"file":"TeamRank.js","sourceRoot":"","sources":["../../scripts/koComponents/TeamRank.ts"],"names":[],"mappings":"AACA,OAAO,QAAQ,MAAM,+BAA+B,CAAC;AAErD,MAAM,QAAQ;IAGV,YAAY,MAAsB;QAC9B,IAAI,CAAC,IAAI,GAAG,EAAE,CAAC,UAAU,CAAC,MAAM,CAAC,IAAI,CAAC,CAAC;IAC3C,CAAC;CACJ;AAED,eAAe,EAAE,SAAS,EAAE,QAAQ,EAAE,QAAQ,EAAE,QAAQ,EAAE,CAAC"}

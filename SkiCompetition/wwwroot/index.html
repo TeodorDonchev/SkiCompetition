@@ -21,7 +21,7 @@
 
 
     <link rel="stylesheet" href="/css/styles.css">
-    <script type="module" src="/js/startUp.js"></script>
+    <script type="module" src="/Generated Files/startUp.js"></script>
     <title>Ski Competition</title>
 </head>
 
@@ -35,7 +35,7 @@
     </div>
 
     <!--ko with: ActiveDeck -->
-    <div data-bind="template:  contentVM.templateName"></div>
+    <div data-bind="template:{name:  Name + '-template', data: contentVM}"></div>
     <!--/ko-->
 
     <script type="text/html" id="Competitions-template">
@@ -44,11 +44,11 @@
                 <div class="custom controllers d-flex justify-content-around">
                     <div class="filters d-flex justify-content-between">
                         <div>
-                            <button type="button" class="custom btn rounded-pill shadow-none" data-bind="click: $parent.changeFilterCompetition.bind($parent), css:{'active': $parent.Competitions() == $parent.Service.getPastCompetitions()}">FINISHED</button>
-                            <button type="button" class="custom btn rounded-pill shadow-none" data-bind="click: $parent.changeFilterCompetition.bind($parent), css:{'active': $parent.Competitions() == $parent.Service.getUpcomingCompetitions()}">UPCOMING</button>
+                            <button type="button" class="custom btn rounded-pill shadow-none">FINISHED</button>
+                            <button type="button" class="custom btn rounded-pill shadow-none">UPCOMING</button>
                         </div>
 
-                        <button type="button" class="clear-filter btn btn-primary rounded-pill shadow-none" data-bind="click: $parent.clearFilterCompetition.bind($parent), visible: $parent.Competitions() != $parent.Service.getAllCompetitions()">X</button>
+                        <button type="button" class="clear-filter btn btn-primary rounded-pill shadow-none">X</button>
                     </div>
                     <div class="buttons">
                         <div class="search">
@@ -58,7 +58,7 @@
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
-                        <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetition">COMPETITION +</button>
+                            <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetition">COMPETITION +</button>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form data-bind="submit: $parent.addCompetition.bind($parent)">
+                                <form>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">Name:</label>
                                         <input type="text" class="form-control" data-bind="value: $parent.name">
@@ -93,19 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <ul class="custom card-list"data-bind="foreach: $parent.Competitions">
-                    <li>
-                        <div class="custom card shadow bg-white rounded" style="width: 18rem;">
-                            <div class="custom card-body">
-                                <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><span class="text-bold">Date: </span><span data-bind="text: $data.date"></span></li>
-                                <li class="list-group-item"><span class="text-bold">Location: </span><span data-bind="text: $data.location"></span></li>
-                                <li class="list-group-item"><span class="text-bold">Competitors: </span><span data-bind="text: $data.competitors.length"></span></li>
-                            </ul>
-                        </div>
-                    </li>
+                <ul class="custom card-list" data-bind="template:{name:'competition-card', foreach: competitions}">
                 </ul>
                 <!--<div class="custom table-responsive overflow-auto">
                     <table class="table">
@@ -131,285 +119,240 @@
         </div>
     </script>
 
-    <script type="text/html" id="Competitors-template">
-            <div class="d-flex justify-content-center">
-                <div class="container-fluid">
-                    <div class="custom controllers d-flex justify-content-center">
-                        <div class="buttons">
-                            <div class="search">
-                                <div class="custom input-group rounded">
-                                    <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                                    <button type="button" class="btn bg-color-db shadow-none">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
-                                <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetitor">COMPETITOR +</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="addCompetitor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Add Competitor</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form data-bind="submit: $parent.addCompetitor.bind($parent)">
-                                        <div class="form-group">
-                                            <label for="recipient-name" class="col-form-label">First Name:</label>
-                                            <input type="text" class="form-control" data-bind="value: $parent.firstName">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Last Name:</label>
-                                            <input type="text" class="form-control" data-bind="value: $parent.lastName">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Sex:</label>
-                                            <select class="custom-select form-control" id="inputGroupSelect01">
-                                                <option value="" selected disabled hidden>Select...</option>
-                                                <option value="1">Female</option>
-                                                <option value="2">Male</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Team:</label>
-                                            <select class="custom-select form-control" id="inputGroupSelect02" data-bind="foreach: $parent.Teams">
-                                                <option value="" selected disabled hidden>Select...</option>
-                                                <option value="$data.id" data-bind="text: $data.name"></option>
-                                            </select>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="custom card-list" data-bind="foreach: $parent.Competitors">
-                        <li>
-                            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
-                                <div class="custom card-body">
-                                    <h5 class="card-title text-center" data-bind="text: $data.firstName + ' ' + $data.lastName"></h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><span class="text-bold">Sex: </span><span data-bind="text: $data.sex"></span></li>
-                                    <li class="list-group-item"><span class="text-bold">Team: </span><span data-bind="text: $data.team.name"></span></li>
-                                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <!--<div class="table-responsive">
-        <table class="table overflow-auto">
-            <thead class="custom table-light">
-                <tr>
-                    <th scope="col">Competitor</th>
-                    <th scope="col">Team</th>
-                    <th scope="col">Points</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: $parent.Competitors">
-                <tr>
-                    <td data-bind="text: $data.firstName + ' ' + $data.lastName"></td>
-                    <td data-bind="text: $data.team.name"></td>
-                    <td data-bind="text: $data.points"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>-->
+    <script type="text/html" id="competition-card">
+        <li>
+            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
+                <div class="custom card-body">
+                    <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
                 </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span class="text-bold">Date: </span><span data-bind="text: $data.date"></span></li>
+                    <li class="list-group-item"><span class="text-bold">Location: </span><span data-bind="text: $data.location"></span></li>
+                    <li class="list-group-item"><span class="text-bold">Competitors: </span><span data-bind="text: $data.competitors.length"></span></li>
+                </ul>
             </div>
+        </li>
 
+
+    </script>
+
+    <script type="text/html" id="Competitors-template">
+        <div class="d-flex justify-content-center">
+            <div class="container-fluid">
+                <div class="custom controllers d-flex justify-content-center">
+                    <div class="buttons">
+                        <div class="search">
+                            <div class="custom input-group rounded">
+                                <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
+                                <button type="button" class="btn bg-color-db shadow-none">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetitor">COMPETITOR +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="addCompetitor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Add Competitor</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label">First Name:</label>
+                                        <input type="text" class="form-control" data-bind="value: $parent.firstName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="col-form-label">Last Name:</label>
+                                        <input type="text" class="form-control" data-bind="value: $parent.lastName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="col-form-label">Sex:</label>
+                                        <select class="custom-select form-control" id="inputGroupSelect01">
+                                            <option value="" selected disabled hidden>Select...</option>
+                                            <option value="1">Female</option>
+                                            <option value="2">Male</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="col-form-label">Team:</label>
+                                        <select class="custom-select form-control" id="inputGroupSelect02" data-bind="foreach: $parent.Teams">
+                                            <option value="" selected disabled hidden>Select...</option>
+                                            <option value="$data.id" data-bind="text: $data.name"></option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="custom card-list" data-bind="template:{name:'competitor-card', foreach: competitors}"> </ul>
+            </div>
+        </div>
+
+    </script>
+
+    <script type="text/html" id="competitor-card">
+        <li>
+            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
+                <div class="custom card-body">
+                    <h5 class="card-title text-center" data-bind="text: $data.firstName + ' ' + $data.lastName"></h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span class="text-bold">Sex: </span><span data-bind="text: $data.sex"></span></li>
+                    <li class="list-group-item"><span class="text-bold">Team: </span><span data-bind="text: $data.teamId"></span></li>
+                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
+                </ul>
+            </div>
+        </li>
     </script>
 
     <script type="text/html" id="Teams-template">
-            <div class="d-flex justify-content-center">
-                <div class="container-fluid">
-                    <div class="custom controllers d-flex justify-content-center">
-                        <div class="buttons">
-                            <div class="search">
-                                <div class="custom input-group rounded">
-                                    <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                                    <button type="button" class="btn bg-color-db shadow-none">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
-                                <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addTeam">TEAM +</button>
+        <div class="d-flex justify-content-center">
+            <div class="container-fluid">
+                <div class="custom controllers d-flex justify-content-center">
+                    <div class="buttons">
+                        <div class="search">
+                            <div class="custom input-group rounded">
+                                <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
+                                <button type="button" class="btn bg-color-db shadow-none">
+                                    <i class="bi bi-search"></i>
+                                </button>
                             </div>
+                            <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addTeam">TEAM +</button>
                         </div>
                     </div>
-
-                    <div class="modal fade" id="addTeam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Add Competitor</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form data-bind="submit: $parent.addTeam.bind($parent)">
-                                        <div class="form-group">
-                                            <label for="recipient-name" class="col-form-label">Name:</label>
-                                            <input type="text" class="form-control" data-bind="value: $parent.teamName">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="custom card-list" data-bind="foreach: $parent.Teams">
-                        <li>
-                            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
-                                <div class="custom card-body">
-                                    <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
-                                    <li class="list-group-item"><span class="text-bold">Competitors: </span><span data-bind="text: $data.competitors.length"></span></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <!--<div class="custom table-responsive">
-        <table class="table overflow-auto">
-            <thead class="custom table-light">
-                <tr>
-                    <th scope="col">Team</th>
-                    <th scope="col">Competitors</th>
-                    <th scope="col">Points</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: $parent.Teams">
-                <tr>
-                    <td data-bind="text: $data.name"></td>
-                    <td data-bind="text: $data.competitors.length"></td>
-                    <td data-bind="text: $data.points"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>-->
                 </div>
-            </div>
 
+                <div class="modal fade" id="addTeam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Add Competitor</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label">Name:</label>
+                                        <input type="text" class="form-control" data-bind="value: $parent.teamName">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="custom card-list" data-bind="template:{name:'team-card', foreach: teams}">
+                </ul>
+            </div>
+        </div>
+
+    </script>
+
+    <script type="text/html" id="team-card">
+        <li>
+            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
+                <div class="custom card-body">
+                    <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
+                    <li class="list-group-item"><span class="text-bold">Competitors: </span><span data-bind="text: $data.competitors.length"></span></li>
+                </ul>
+            </div>
+        </li>
     </script>
 
     <script type="text/html" id="Personal Ranks-template">
-            <div class="d-flex justify-content-center">
-                <div class="container-fluid">
-                    <div class="custom controllers d-flex justify-content-around">
-                        <div class="filters">
-                            <button type="button" class="custom btn rounded-pill shadow-none" data-bind="click: $parent.changeFilterCompetitor.bind($parent), css:{'active': $parent.SortedCompetitors() == $parent.Service.getSortedFemaleCompetitors()}">FEMALE</button>
-                            <button type="button" class="custom btn rounded-pill shadow-none" data-bind="click: $parent.changeFilterCompetitor.bind($parent), css:{'active': $parent.SortedCompetitors() == $parent.Service.getSortedMaleCompetitors()}">MALE</button>
-                        </div>
-                        <div class="buttons">
-                            <div class="search">
-                                <div class="custom input-group rounded">
-                                    <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                                    <button type="button" class="btn bg-color-db shadow-none">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
+        <div class="d-flex justify-content-center">
+            <div class="container-fluid">
+                <div class="custom controllers d-flex justify-content-around">
+                    <div class="filters">
+                        <button type="button" class="custom btn rounded-pill shadow-none">FEMALE</button>
+                        <button type="button" class="custom btn rounded-pill shadow-none">MALE</button>
+                    </div>
+                    <div class="buttons">
+                        <div class="search">
+                            <div class="custom input-group rounded">
+                                <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
+                                <button type="button" class="btn bg-color-db shadow-none">
+                                    <i class="bi bi-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-
-                    <ul class="custom card-list" data-bind="foreach: $parent.SortedCompetitors">
-                        <li>
-                            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
-                                <div class="custom card-body">
-                                    <h5 class="card-title text-center" data-bind="text: $data.firstName + ' ' + $data.lastName"></h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
-                                    <li class="list-group-item"><span class="text-bold">Team: </span><span data-bind="text: $data.team.name"></span></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <!--<div class="custom table-responsive overflow-auto">
-        <table class="table">
-            <thead class="custom table-light">
-                <tr>
-                    <th scope="col">Competitor</th>
-                    <th scope="col">Team</th>
-                    <th scope="col">Points</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: $parent.SortedCompetitors">
-                <tr>
-                    <td data-bind="text: $data.firstName + ' ' + $data.lastName"></td>
-                    <td data-bind="text: $data.team.name"></td>
-                    <td data-bind="text: $data.points"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>-->
                 </div>
+
+                <ul class="custom card-list" data-bind="template:{name:'personal-rank-card', foreach: sortedFemaleCompetitors}">
+                </ul>
+                <!--TODO: sortedMaleCompetitors-->
+
             </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="personal-rank-card">
+        <li>
+            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
+                <div class="custom card-body">
+                    <h5 class="card-title text-center" data-bind="text: $data.firstName + ' ' + $data.lastName"></h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
+                    <li class="list-group-item"><span class="text-bold">Team: </span><span data-bind="text: $data.teamId"></span></li>
+                </ul>
+            </div>
+        </li>
     </script>
 
     <script type="text/html" id="Team Ranks-template">
-            <div class="d-flex justify-content-center">
-                <div class="container-fluid">
-                    <div class="custom controllers d-flex justify-content-center">
-                        <div class="buttons">
-                            <div class="search">
-                                <div class="custom input-group rounded">
-                                    <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                                    <button type="button" class="btn bg-color-db shadow-none">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
+        <div class="d-flex justify-content-center">
+            <div class="container-fluid">
+                <div class="custom controllers d-flex justify-content-center">
+                    <div class="buttons">
+                        <div class="search">
+                            <div class="custom input-group rounded">
+                                <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
+                                <button type="button" class="btn bg-color-db shadow-none">
+                                    <i class="bi bi-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-
-                    <ul class="custom card-list" data-bind="foreach: $parent.SortedTeams">
-                        <li>
-                            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
-                                <div class="custom card-body">
-                                    <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
-                                    <li class="list-group-item"><span class="text-bold">Competitors: </span><span data-bind="text: $data.competitors.length"></span></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <!--<div class="custom table-responsive overflow-auto">
-        <table class="table">
-            <thead class="custom table-light">
-                <tr>
-                    <th scope="col">Team</th>
-                    <th scope="col">Competitors</th>
-                    <th scope="col">Points</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: $parent.SortedTeams">
-                <tr>
-                    <td data-bind="text: $data.name"></td>
-                    <td data-bind="text: $data.competitors.length"></td>
-                    <td data-bind="text: $data.points"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>-->
                 </div>
-            </div>
 
+                <ul class="custom card-list" data-bind="template:{name:'team-rank-card', foreach: sortedTeams}">
+                </ul>
+            </div>
+        </div>
+
+    </script>
+
+    <script type="text/html" id="team-rank-card">
+        <li>
+            <div class="custom card shadow bg-white rounded" style="width: 18rem;">
+                <div class="custom card-body">
+                    <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
+                    <li class="list-group-item"><span class="text-bold">Competitors: </span><span data-bind="text: $data.competitors.length"></span></li>
+                </ul>
+            </div>
+        </li>
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

@@ -3,26 +3,16 @@ import Team from '../Models/Team.js';
 import BaseModel from './BaseModel.js';
 
 class Competitor extends BaseModel {
-    private _id: number;
-    private _firstName: string;
-    private _lastName: string;
-    private _sex: string;
-    private _team: Team;
-    private _points: number;
-    private _time: Date;
-    private _competitions: Array<Competition>;
 
-    //remove points from constructor later
-    constructor(id: number, firstName: string, lastName: string, sex: string, team: Team, points: number) {
+    constructor(private _id: number,
+        private _firstName: string,
+        private _lastName: string,
+        private _sex: string,
+        private _teamId: number,
+        private _points: number,
+        private _time: number,
+        private _competitionIds: Array<number> = []) {
         super();
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.sex = sex;
-        this.team = team;
-        this._points = points;
-        this._time = new Date();
-        this._competitions = [];
     }
 
     public get id() {
@@ -41,8 +31,8 @@ class Competitor extends BaseModel {
         return this._sex;
     }
 
-    public get team() {
-        return this._team;
+    public get teamId() {
+        return this._teamId;
     }
 
     public get points() {
@@ -53,8 +43,8 @@ class Competitor extends BaseModel {
         return this._time;
     }
 
-    public get competitions() {
-        return this._competitions;
+    public get competitionIds() {
+        return this._competitionIds;
     }
 
     private set id(value: number) {
@@ -73,8 +63,8 @@ class Competitor extends BaseModel {
         this._sex = value;
     }
 
-    private set team(value: Team) {
-        this._team = value;
+    private set teamId(value: number) {
+        this._teamId = value;
     }
 
 }

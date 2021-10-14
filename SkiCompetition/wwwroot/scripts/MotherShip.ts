@@ -1,102 +1,69 @@
-﻿import Competition from "./Models/Competition.js";
+﻿import { CompetitionDeck } from "./Decks/CompetitionDeck.js";
+import CompetitorDeck from "./Decks/CompetitorDeck.js";
+import Deck from "./Decks/Deck.js";
+import PersonalRanksDeck from "./Decks/PersonalRanksDeck.js";
+import TeamDeck from "./Decks/TeamDeck.js";
+import TeamRanksDeck from "./Decks/TeamRanksDeck.js";
+import Competition from "./Models/Competition.js";
 import Competitor from "./Models/Competitor.js";
 import Team from "./Models/Team.js";
-import Service from "./Service.js";
+import LService from "./Services/LService.js";
 
-class ContentVM {
-    public templateName: string;
-    constructor(public Name: string) {
-        this.templateName = Name + "-template";
-    }
-}
-
-class Deck {
-    public contentVM: ContentVM;
-    
-    constructor(public Name: string) {
-        this.contentVM = new ContentVM(Name);
-    }
-}
 
 export default class MotherShipVM {
-    Service: Service;
-    Competitors: Array<Competitor>;
-    Competitions: KnockoutObservableArray<Competition>;
-    SortedCompetitors: KnockoutObservableArray<Competitor>;
-    SortedTeams: Array<Team>;
-    Teams: Array<Team>;
-    Decks: Array<Deck>;
+    Service: LService;
     ActiveDeck: KnockoutObservable<Deck>;
-    competition: Competition;
-    name: KnockoutObservable<string>;
-    location: KnockoutObservable<string>;
-    date: KnockoutObservable<Date>;
-
-    firstName: KnockoutObservable<string>;
-    lastName: KnockoutObservable<string>;
-    sex: KnockoutObservable<string>;
-    team: KnockoutObservable<Team>;
-
-    teamName: KnockoutObservable<string>;
+    Decks: Array<Deck>;
 
     constructor() {
-        this.Service = new Service();
-        this.Competitors = this.Service.getAllCompetitors();
-        this.Competitions = ko.observableArray(this.Service.getAllCompetitions());
-        this.SortedCompetitors = ko.observableArray(this.Service.getSortedFemaleCompetitors());
-        this.SortedTeams = this.Service.getSortedTeams();
-        this.Teams = this.Service.getAllTeams();
-
-        this.name = ko.observable();
-        this.location = ko.observable();
-        this.date = ko.observable();
-
+        this.Service = new LService();
+      
         this.Decks = [
-            new Deck("Competitions"),
-            new Deck("Competitors"),
-            new Deck("Teams"),
-            new Deck("Personal Ranks"),
-            new Deck("Team Ranks"),
+            new CompetitionDeck(this.Service),
+            new CompetitorDeck(this.Service),
+            new TeamDeck(this.Service),
+            new PersonalRanksDeck(this.Service),
+            new TeamRanksDeck(this.Service),
         ];
         this.ActiveDeck = ko.observable(this.Decks[0]);
     }
 
-    changeFilterCompetition(data, event) {
-        let element = event.target;
+    //changeFilterCompetition(data, event) {
+    //    let element = event.target;
 
-        if (element.outerText === 'FINISHED') {
-            this.Competitions(this.Service.getPastCompetitions());
-        } else {
-            this.Competitions(this.Service.getUpcomingCompetitions());
-        }
-    }
+    //    if (element.outerText === 'FINISHED') {
+    //        this.Competitions(this.Service.getPastCompetitions());
+    //    } else {
+    //        this.Competitions(this.Service.getUpcomingCompetitions());
+    //    }
+    //}
 
-    addTeam(formElement) {
-        //TODO
-    }
+    //addTeam(formElement) {
+    //    //TODO
+    //}
 
-    addCompetition(formElement) {
-        this.competition = new Competition(1, this.name(), this.date(), this.location(), [], false);
-        this.Service.addCompetition(this.competition);
-        this.Competitions(this.Service.getAllCompetitions());
-    }
+    //addCompetition(formElement) {
+    //    this.competition = new Competition(1, this.name(), this.date(), this.location(), [], false);
+    //    this.Service.addCompetition(this.competition);
+    //    this.Competitions(this.Service.getAllCompetitions());
+    //}
 
-    addCompetitor(formElement) {
-        let data = new FormData(formElement);
-        console.log(data);
-        console.log(formElement);
-    }
+    //addCompetitor(formElement) {
+    //    let data = new FormData(formElement);
+    //    console.log(data);
+    //    console.log(formElement);
+    //}
 
-    clearFilterCompetition() {
-        this.Competitions(this.Service.getAllCompetitions());
-    }
+    //clearFilterCompetition() {
+    //    this.Competitions(this.Service.getAllCompetitions());
+    //}
 
-    changeFilterCompetitor(data, event) {
-        let element = event.target;
-        if (element.outerText === 'FEMALE') {
-            this.SortedCompetitors(this.Service.getSortedFemaleCompetitors());
-        } else {
-            this.SortedCompetitors(this.Service.getSortedMaleCompetitors());
-        }
-    }
+    //changeFilterCompetitor(data, event) {
+    //    let element = event.target;
+    //    if (element.outerText === 'FEMALE') {
+    //        this.SortedCompetitors(this.Service.getSortedFemaleCompetitors());
+    //    } else {
+    //        this.SortedCompetitors(this.Service.getSortedMaleCompetitors());
+    //    }
+    //}
 }

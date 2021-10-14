@@ -1,4 +1,4 @@
-﻿import MotherShipVM from "../js/MotherShip.js";
+﻿import MotherShipVM from "./MotherShip.js";
 
 declare global { interface Window { startUp: () => void; } }
 
