@@ -16,6 +16,9 @@ import TeamCRUDCacheDecorator from "./Decorators/TeamCRUDCache.js";
 import TeamCrud from "./CRUD/TeamCrud.js";
 
 export default class LService implements ICompetitionService, ICompetitorService, ITeamService{
+    createNewCompetition(): any {
+        return new Competition(-1, 'New Competition', Date.now(), 'Location');
+    }
     private CompetitorCRUD: ICRUD<Competitor>;
     private CompetitionCRUD: ICRUD<Competition>;
     private TeamCRUD: ICRUD<Team>;

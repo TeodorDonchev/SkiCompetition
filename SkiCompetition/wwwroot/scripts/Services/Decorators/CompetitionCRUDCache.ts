@@ -4,7 +4,7 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
     competitionCache: Array<Competition>;
 
     constructor(private decoratedObject: ICRUD<Competition>) {
-
+        this.competitionCache = [];
     }
     Create(element: Competition): Promise<number> {
         return new Promise((resolve, reject) => {
