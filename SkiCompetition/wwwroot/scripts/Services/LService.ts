@@ -25,7 +25,7 @@ export default class LService implements ICompetitionService, ICompetitorService
 
     constructor() {
         this.CompetitorCRUD = new CompetitorCRUDLogDecorator(new CompetitorCRUDCacheDecorator(new CompetitorCrud()), new ConsoleLogger());
-        this.CompetitionCRUD = new CompetitionCRUDLogDecorator(new CompetitionCRUDCacheDecorator(new CompetitionCrud()), new ConsoleLogger());
+        this.CompetitionCRUD = new CompetitionCRUDLogDecorator(new CompetitionCrud(), new ConsoleLogger());
         this.TeamCRUD = new TeamCRUDLogDecorator(new TeamCRUDCacheDecorator(new TeamCrud()), new ConsoleLogger());
     }
 

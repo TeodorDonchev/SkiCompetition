@@ -59,18 +59,17 @@
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
-                            <button data-bind="click:()=> activeCompetition(createNewCompetition())" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetition">COMPETITION +</button>
+                            <button data-bind="click:()=> createNewCompetition()" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetition">COMPETITION +</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal fade" id="addCompetition" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
-
                         <div class="modal-content">
                             <!--ko with: activeCompetition()-->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Add Competition</h5>
+                                <h5 class="modal-title" data-bind="text: isEdit?'Edit Competition':'Add Competition'" id="staticBackdropLabel"></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -92,6 +91,11 @@
                                         <button type="button" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
                                     </div>
                                 </form>
+                                <!--ko if:isEdit-->
+                                <table>
+                                    this is my table
+                                </table>
+                                <!--/ko-->
                             </div>
                             <!--/ko-->
                         </div>
@@ -99,40 +103,6 @@
                 </div>
                 <ul class="custom card-list" data-bind="template:{name:'competition-card', foreach: competitions}">
                 </ul>
-
-                <div class="modal fade" id="detailedCompetition" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-
-                        <div class="modal-content">
-                            <!--ko with: activeCompetition()-->
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Competition</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="col-form-label">Location:</label>
-                                        <input type="text" class="form-control" data-bind="value: location">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="col-form-label">Start Date:</label>
-                                        <input type="date" class="form-control" data-bind="value: date">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!--/ko-->
-                        </div>
-                    </div>
-                </div>
 
                 <!--<div class="custom table-responsive overflow-auto">
         <table class="table">
@@ -159,7 +129,7 @@
     </script>
 
     <script type="text/html" id="competition-card">
-        <li data-bind="click: function () { this.activeCompetition($data)}.bind($parent)" data-bs-toggle="modal" data-bs-target="#detailedCompetition">
+        <li data-bind="click: () => { $parent.editCompetition($data)}" data-bs-toggle="modal" data-bs-target="#addCompetition">
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">
                     <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
