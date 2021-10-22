@@ -5,7 +5,7 @@ export default class CompetitorCRUDCacheDecorator implements ICRUD<Competitor>{
     competitorCache: Array<Competitor>;
 
     constructor(private decoratedObject: ICRUD<Competitor>) {
-
+        this.competitorCache = [];
     }
 
 

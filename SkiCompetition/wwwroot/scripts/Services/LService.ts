@@ -16,6 +16,12 @@ import TeamCRUDCacheDecorator from "./Decorators/TeamCRUDCache.js";
 import TeamCrud from "./CRUD/TeamCrud.js";
 
 export default class LService implements ICompetitionService, ICompetitorService, ITeamService{
+    createNewTeam(): Team {
+        return new Team(-1, 'Team', 0);
+    }
+    CreateNewCompetitor(): Competitor {
+        return new Competitor(-1, 'New', 'Competitor', 'Female', -1, 0, 0);
+    }
     createNewCompetition(): any {
         return new Competition(-1, 'New Competition', Date.now(), 'Location');
     }
@@ -36,9 +42,7 @@ export default class LService implements ICompetitionService, ICompetitorService
     }
 
     getSortedFemaleCompetitors(): Promise<Competitor[]> {
-        console.log('competitor crud: ', this.CompetitorCRUD);
         return this.CompetitorCRUD.ReadAll().then((competitors) => {
-            console.log('competitors from sorted female: ', competitors);
             return competitors.filter((competitor) => competitor.sex === 'Female').sort((a, b) => b.points - a.points);
         });
     }

@@ -4,15 +4,15 @@ import BaseModel from './BaseModel.js';
 class Team extends BaseModel{
     private _id: number;
     private _name: string;
-    private _competitors: Array<Competitor>;
+    private _competitors: Array<number>;
     private _points: number;
 
     //remove points from constructor later
-    constructor(id: number, name: string, points: number) {
+    constructor(id: number, name: string, points: number, competitors: Array<number>=[]) {
         super();
         this.id = id;
         this.name = name;
-        this._competitors = [];
+        this._competitors = competitors;
         this._points = points;
     }
 
@@ -32,12 +32,20 @@ class Team extends BaseModel{
         return this._points;
     }
 
-    private set id(value: number) {
+    public set id(value: number) {
         this._id = value;
     }
 
-    private set name(value: string) {
+    public set name(value: string) {
         this._name = value;
+    }
+
+    public set competitors(value: number[]) {
+        this._competitors = value;
+    }
+
+    public set points(value: number) {
+        this._points = value;
     }
 }
 

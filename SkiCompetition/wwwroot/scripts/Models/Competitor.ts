@@ -11,7 +11,7 @@ class Competitor extends BaseModel {
         private _teamId: number,
         private _points: number,
         private _time: number,
-        private _competitionIds: Array<number> = []) {
+        private _competitions: Array<number> = []) {
         super();
     }
 
@@ -43,28 +43,40 @@ class Competitor extends BaseModel {
         return this._time;
     }
 
-    public get competitionIds() {
-        return this._competitionIds;
+    public get competitions() {
+        return this._competitions;
     }
 
     private set id(value: number) {
         this._id = value;
     }
 
-    private set firstName(value: string) {
+    public set firstName(value: string) {
         this._firstName = value;
     }
 
-    private set lastName(value: string) {
+    public set lastName(value: string) {
         this._lastName = value;
     }
 
-    private set sex(value: string) {
+    public set sex(value: string) {
         this._sex = value;
     }
 
-    private set teamId(value: number) {
+    public set teamId(value: number) {
         this._teamId = value;
+    }
+
+    public set competitions(value: number[]) {
+        this._competitions = value;
+    }
+
+    public set time(value: number) {
+        this._time = value;
+    }
+
+    public set points(value: number) {
+        this._points = value;
     }
 
 }

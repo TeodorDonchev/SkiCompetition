@@ -13,55 +13,60 @@ export default class TeamCrud implements ICRUD<Team>{
 
     Create(element: Team): Promise<number> {
         return new Promise((resolve, reject) => {
-            let found = this.teams.find((team) => team.name === element.name);
-            if (found) {
-                reject('Team name already taken.');
-            } else {
-                this.teams.push(element);
-                resolve(element.id);
-            }
+            fetch('https://40a7d272-83ea-401c-bc97-83ae98af35cd.mock.pstmn.io/api/team', {
+                method: 'POST',
+                body: JSON.stringify(element)
+            }).then((data) => {
+                return data.json()
+            }).then((team) => {
+                console.log('team create from postman: ', team);
+                resolve(team.id)
+            });
         });
     }
     Read(id: number): Promise<Team> {
         return new Promise((resolve, reject) => {
-            let found = this.teams.find((team) => team.id === id);
-
-            if (found) {
-                resolve(found);
-            } else {
-                reject('There is no team with id: ' + id);
-            }
+            fetch('https://40a7d272-83ea-401c-bc97-83ae98af35cd.mock.pstmn.io/api/team', {
+                method: 'GET',
+                body: JSON.stringify(id)
+            }).then((data) => {
+                return data.json()
+            }).then((t) => {
+                console.log('team read from postman: ', t);
+                resolve(new Team(t.id, t.name, t.points, t.competitors))
+            });
         });
     }
     Update(id: number, element: Team): Promise<void> {
         return new Promise((resolve, reject) => {
-            let found = this.teams.find((team) => team.id === id);
-
-            if (found) {
-                let index = this.teams.indexOf(found);
-                this.teams[index] = element;
-                resolve();
-            } else {
-                reject('There is no team with id: ' + id);
-            }
+            fetch('https://40a7d272-83ea-401c-bc97-83ae98af35cd.mock.pstmn.io/api/team', {
+                method: 'PUT',
+                body: JSON.stringify(element)
+            }).then((data) => {
+                return data.json();
+            }).then((team) => {
+                console.log('team update: ', team);
+                resolve()
+            });
         });
     }
     Delete(id: number): Promise<void> {
         return new Promise((resolve, reject) => {
-            let found = this.teams.find((team) => team.id === id);
-
-            if (found) {
-                let index = this.teams.indexOf(found);
-                this.teams.splice(index, 1);
-                resolve();
-            } else {
-                reject('There is no team with id: ' + id);
-            }
+            fetch('https://40a7d272-83ea-401c-bc97-83ae98af35cd.mock.pstmn.io/api/team'
+                , { method: 'DELETE' })
+                .then(() => {
+                    resolve()
+                });
         })
     }
     ReadAll(): Promise<Team[]> {
         return new Promise((resolve, reject) => {
-            resolve(this.teams);
+            fetch('https://40a7d272-83ea-401c-bc97-83ae98af35cd.mock.pstmn.io/api/team')
+                .then((data) => {
+                    return data.json();
+                }).then((team) => {
+                    resolve(team.map((t) => new Team(t.id, t.name, t.points, t.competitors)));
+                });
         })
     }
 }

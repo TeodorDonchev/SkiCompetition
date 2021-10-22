@@ -6,6 +6,7 @@ export default class TeamCRUDCacheDecorator implements ICRUD<Team>{
 
     constructor(private decoratedObject: ICRUD<Team>) {
 
+        this.teamCache = [];
     }
     Create(element: Team): Promise<number> {
         return new Promise((resolve, reject) => {

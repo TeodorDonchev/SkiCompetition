@@ -15,10 +15,7 @@ export class CompetitionsDialogVM {
     }
 
     flushResult() {
-        this.model.name = this.name();
-        this.model.location = this.location();
-        this.model.date = this.date();
-        this.onFinish(this.model);
+        this.onFinish(new Competition(-1, this.name(), this.date(), this.location()));
     }
 }
 
@@ -39,7 +36,8 @@ export default class CompetitionsVM extends ContentVM {
     createNewCompetition() {
         this.activeCompetition(new CompetitionsDialogVM(this.service.createNewCompetition(), (newCompetition: Competition) => {
             this.service.CreateCompetition(newCompetition).then((id) => {
-                this.refreshResults();
+                //this.refreshResults();
+                this.competitions.push(newCompetition);
                 this.activeCompetition(null);
             });
         }));
@@ -48,8 +46,10 @@ export default class CompetitionsVM extends ContentVM {
     editCompetition(editedCompetition: Competition) {
         this.activeCompetition(new CompetitionsDialogVM(editedCompetition, (updatedCompetition: Competition) => {
             this.service.UpdateCompetition(editedCompetition.id, editedCompetition).then((id) => {
-                this.refreshResults();
+                //this.refreshResults();
+                this.competitions.replace(editedCompetition, updatedCompetition);
                 this.activeCompetition(null);
+
             });
         }, true));
     }

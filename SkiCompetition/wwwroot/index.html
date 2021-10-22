@@ -42,14 +42,14 @@
     <script type="text/html" id="Competitions-template">
         <div class="d-flex justify-content-around">
             <div class="container-fluid">
-                <div class="custom controllers d-flex justify-content-around">
+                <div class="custom controllers d-flex justify-content-around"> 
                     <div class="filters d-flex justify-content-between">
                         <div>
                             <button type="button" class="custom btn rounded-pill shadow-none">UPCOMING</button>
                             <button type="button" class="custom btn rounded-pill shadow-none">FINISHED</button>
                             <button type="button" class="custom btn rounded-pill shadow-none">ALL</button>
                         </div>
-
+                         
                     </div>
                     <div class="buttons">
                         <div class="search">
@@ -105,25 +105,25 @@
                 </ul>
 
                 <!--<div class="custom table-responsive overflow-auto">
-        <table class="table">
-            <thead class="custom table-light">
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Competition</th>
-                    <th scope="col">Competitors</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: $parent.Competitions">
-                <tr>
-                    <td data-bind="text: $data.date"></td>
-                    <td data-bind="text: $data.location"></td>
-                    <td data-bind="text: $data.name"></td>
-                    <td data-bind="text: $data.competitors.length"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>-->
+                    <table class="table">
+                        <thead class="custom table-light">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Competition</th>
+                                <th scope="col">Competitors</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: $parent.Competitions">
+                            <tr>
+                                <td data-bind="text: $data.date"></td>
+                                <td data-bind="text: $data.location"></td>
+                                <td data-bind="text: $data.name"></td>
+                                <td data-bind="text: $data.competitors.length"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>-->
             </div>
         </div>
     </script>
@@ -161,7 +161,7 @@
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
-                            <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetitor">COMPETITOR +</button>
+                            <button data-bind="click:()=> createNewCompetitor()" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetitor">COMPETITOR +</button>
                         </div>
                     </div>
                 </div>
@@ -169,19 +169,20 @@
                 <div class="modal fade" id="addCompetitor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
+                            <!--ko with: activeCompetitor()-->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Add Competitor</h5>
+                                <h5 class="modal-title" data-bind="text: isEdit?'Edit Competitor':'Add Competitor'"id="staticBackdropLabel"></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">First Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: $parent.firstName">
+                                        <input type="text" class="form-control" data-bind="value: firstName">
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Last Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: $parent.lastName">
+                                        <input type="text" class="form-control" data-bind="value: lastName">
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Sex:</label>
@@ -200,10 +201,11 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                                        <button type="submit" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
                                     </div>
                                 </form>
                             </div>
+                            <!--/ko-->
                         </div>
                     </div>
                 </div>
@@ -215,7 +217,7 @@
     </script>
 
     <script type="text/html" id="competitor-card">
-        <li>
+        <li data-bind="click: () => { $parent.editCompetitor($data)}" data-bs-toggle="modal" data-bs-target="#addCompetitor">
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">
                     <h5 class="card-title text-center" data-bind="text: $data.firstName + ' ' + $data.lastName"></h5>
@@ -241,7 +243,7 @@
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
-                            <button type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addTeam">TEAM +</button>
+                            <button data-bind="click:()=> createNewTeam()" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addTeam">TEAM +</button>
                         </div>
                     </div>
                 </div>
@@ -249,22 +251,24 @@
                 <div class="modal fade" id="addTeam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
+                            <!--ko with: activeTeam()-->
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Add Competitor</h5>
+                                <h5 class="modal-title" data-bind="text: isEdit?'Edit Team':'Add Team'" id="staticBackdropLabel"></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: $parent.teamName">
+                                        <input type="text" class="form-control" data-bind="value: name">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                                        <button type="submit" data-bind="click:()=> flushResult()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                                     </div>
                                 </form>
                             </div>
+                            <!--/ko-->
                         </div>
                     </div>
                 </div>
@@ -276,7 +280,7 @@
     </script>
 
     <script type="text/html" id="team-card">
-        <li>
+        <li data-bind="click: () => { $parent.editTeam($data)}" data-bs-toggle="modal" data-bs-target="#addTeam">
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">
                     <h5 class="card-title text-center" data-bind="text: $data.name"></h5>
