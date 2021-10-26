@@ -3,7 +3,7 @@ import CommunicationFacade from "../CommunicationFacade.js";
 
 export default class CompetitorCrud implements ICRUD<Competitor>{
     competitors: Array<Competitor>;
-    constructor(private CommunicationFacade: CommunicationFacade) {
+    constructor(private CommunicationFacade: CommunicationFacade<Competitor>) {
          
     }
 
@@ -13,8 +13,9 @@ export default class CompetitorCrud implements ICRUD<Competitor>{
         });
     }
     Read(id: number): Promise<Competitor> {
-        return this.CommunicationFacade.getDataByID(id).then((c) => {
-            return new Competitor(c.id, c.firstName, c.lastName, c.sex, c.teamId, c.points, c.time);
+        return this.CommunicationFacade.getDataByID(id).then((competitor) => {
+            return competitor;
+            /*new Competitor(c.id, c.firstName, c.lastName, c.sex, c.teamId, c.points, c.time);*/
         });
     }
     Update(id: number, element: Competitor): Promise<void> {
@@ -25,7 +26,8 @@ export default class CompetitorCrud implements ICRUD<Competitor>{
     }
     ReadAll(): Promise<Competitor[]> {
         return this.CommunicationFacade.getAllData().then((competitions) => {
-            return competitions.map((c) => new Competitor(c.id, c.firstName, c.lastName, c.sex, c.teamId, c.points, c.time, c.competitions));
+            return competitions;
+                //.map((c) => new Competitor(c.id, c.firstName, c.lastName, c.sex, c.teamId, c.points, c.time, c.competitions));
         });
     }
 }

@@ -2,7 +2,7 @@
 import CommunicationFacade from "../CommunicationFacade.js";
 
 export default class TeamCrud implements ICRUD<Team>{
-    constructor(private CommunicationFacade: CommunicationFacade) {
+    constructor(private CommunicationFacade: CommunicationFacade<Team>) {
     }
 
     Create(element: Team): Promise<number> {
@@ -11,8 +11,9 @@ export default class TeamCrud implements ICRUD<Team>{
         });   
     }
     Read(id: number): Promise<Team> {
-        return this.CommunicationFacade.getDataByID(id).then((t) => {
-            return new Team(t.id, t.name, t.points, t.competitors);
+        return this.CommunicationFacade.getDataByID(id).then((team) => {
+            return team;
+            //new Team(t.id, t.name, t.points, t.competitors);
         });
     }
     Update(id: number, element: Team): Promise<void> {
@@ -22,8 +23,9 @@ export default class TeamCrud implements ICRUD<Team>{
         return this.CommunicationFacade.deleteData(id);
     }
     ReadAll(): Promise<Team[]> {
-        return this.CommunicationFacade.getAllData().then((competitions) => {
-            return competitions.map((t) => new Team(t.id, t.name, t.points, t.competitors));
+        return this.CommunicationFacade.getAllData().then((teams) => {
+            return teams;
+                //.map((t) => new Team(t.id, t.name, t.points, t.competitors));
         });
     }
 }

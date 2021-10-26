@@ -32,9 +32,9 @@ export default class LService implements ICompetitionService, ICompetitorService
 
     constructor() {
         //pass type to communication Competitor, Competition, Team
-        this.CompetitorCRUD = new CompetitorCRUDLogDecorator(new CompetitorCRUDCacheDecorator(new CompetitorCrud(new CommunicationFacade('competitor'))), new ConsoleLogger());
-        this.CompetitionCRUD = new CompetitionCRUDLogDecorator(new CompetitionCRUDCacheDecorator(new CompetitionCrud(new CommunicationFacade('competition'))), new ConsoleLogger());
-        this.TeamCRUD = new TeamCRUDLogDecorator(new TeamCRUDCacheDecorator(new TeamCrud(new CommunicationFacade('team'))), new ConsoleLogger());
+        this.CompetitorCRUD = new CompetitorCRUDLogDecorator(new CompetitorCRUDCacheDecorator(new CompetitorCrud(new CommunicationFacade<Competitor>('competitor'))), new ConsoleLogger());
+        this.CompetitionCRUD = new CompetitionCRUDLogDecorator(new CompetitionCRUDCacheDecorator(new CompetitionCrud(new CommunicationFacade<Competition>('competition'))), new ConsoleLogger());
+        this.TeamCRUD = new TeamCRUDLogDecorator(new TeamCRUDCacheDecorator(new TeamCrud(new CommunicationFacade<Team>('team'))), new ConsoleLogger());
     }
 
     getSortedTeams(): Promise<Team[]> {
