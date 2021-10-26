@@ -16,7 +16,9 @@
         this._query = '';
         this.setURL();
         return fetch(this._url)
-            .then(data => data.json());
+            .then((data) => {
+                return data.json();
+            });
     }
 
     getDataByID(id: number): Promise<T> {
@@ -26,7 +28,7 @@
             .then(data => data.json());
     }
 
-    postData(element): Promise<T> {
+    postData(element: T): Promise<T> {
         this._query = '';
         this.setURL();
         return fetch(this._url, {
@@ -35,7 +37,7 @@
         }).then(data => data.json());
     }
 
-    updateData(id, element): Promise<void> {
+    updateData(id: number, element: T): Promise<void> {
         this._query = `?id=${id}`;
         this.setURL();
         return fetch(this._url, {
@@ -44,12 +46,10 @@
         }).then(data => data.json());
     }
 
-    deleteData(id): Promise<void> {
+    deleteData(id: number): Promise<void> {
         this._query = `?id=${id}`;
         return fetch(this._url, {
             method: 'DELETE',
         }).then(data => data.json());
     }
-
-   
 }

@@ -36,8 +36,7 @@ export default class CompetitionsVM extends ContentVM {
     createNewCompetition() {
         this.activeCompetition(new CompetitionsDialogVM(this.service.createNewCompetition(), (newCompetition: Competition) => {
             this.service.CreateCompetition(newCompetition).then((id) => {
-                //this.refreshResults();
-                this.competitions.push(newCompetition);
+                this.refreshResults();
                 this.activeCompetition(null);
             });
         }));
@@ -46,8 +45,7 @@ export default class CompetitionsVM extends ContentVM {
     editCompetition(editedCompetition: Competition) {
         this.activeCompetition(new CompetitionsDialogVM(editedCompetition, (updatedCompetition: Competition) => {
             this.service.UpdateCompetition(editedCompetition.id, editedCompetition).then((id) => {
-                //this.refreshResults();
-                this.competitions.replace(editedCompetition, updatedCompetition);
+                this.refreshResults();
                 this.activeCompetition(null);
 
             });
