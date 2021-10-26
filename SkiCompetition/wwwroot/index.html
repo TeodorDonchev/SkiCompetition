@@ -42,14 +42,14 @@
     <script type="text/html" id="Competitions-template">
         <div class="d-flex justify-content-around">
             <div class="container-fluid">
-                <div class="custom controllers d-flex justify-content-around"> 
+                <div class="custom controllers d-flex justify-content-around">
                     <div class="filters d-flex justify-content-between">
                         <div>
-                            <button type="button" class="custom btn rounded-pill shadow-none">UPCOMING</button>
-                            <button type="button" class="custom btn rounded-pill shadow-none">FINISHED</button>
-                            <button type="button" class="custom btn rounded-pill shadow-none">ALL</button>
+                            <button type="button" data-bind="click:()=> filterBy(2), css:{'active':filterBy() === 2}" class="custom btn rounded-pill shadow-none">UPCOMING</button>
+                            <button type="button" data-bind="click:()=> filterBy(1), css:{'active':filterBy() === 1}" class="custom btn rounded-pill shadow-none">FINISHED</button>
+                            <button type="button" data-bind="click:()=> filterBy(0), css:{'active':filterBy() === 0}" class="custom btn rounded-pill shadow-none">ALL</button>
                         </div>
-                         
+
                     </div>
                     <div class="buttons">
                         <div class="search">
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                 </div>
-                <ul class="custom card-list" data-bind="template:{name:'competition-card', foreach: competitions}">
+                <ul class="custom card-list" data-bind="template:{name:'competition-card', foreach: filteredCompetitions}">
                 </ul>
 
                 <!--<div class="custom table-responsive overflow-auto">
@@ -171,7 +171,7 @@
                         <div class="modal-content">
                             <!--ko with: activeCompetitor()-->
                             <div class="modal-header">
-                                <h5 class="modal-title" data-bind="text: isEdit?'Edit Competitor':'Add Competitor'"id="staticBackdropLabel"></h5>
+                                <h5 class="modal-title" data-bind="text: isEdit?'Edit Competitor':'Add Competitor'" id="staticBackdropLabel"></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">

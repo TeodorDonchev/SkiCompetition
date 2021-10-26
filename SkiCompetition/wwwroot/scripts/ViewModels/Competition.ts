@@ -23,13 +23,25 @@ export default class CompetitionsVM extends ContentVM {
     competitions: KnockoutObservableArray<Competition>;
     activeCompetition: KnockoutObservable<CompetitionsDialogVM>;
     selectedCompetition: KnockoutObservable<Competition>;
-
+    filterBy: KnockoutObservable<number>;//0 - all, 1 - finished,2 - upcomming
+    filteredCompetitions: KnockoutComputed<Array<Competition>>;
 
     constructor(service: LService) {
         super(service);
+        this.filterBy = ko.observable(0);
         this.competitions = ko.observableArray([]);
         this.selectedCompetition = ko.observable();
         this.activeCompetition = ko.observable(null);
+
+        this.filteredCompetitions = ko.computed(() => {
+            var filterBy = this.filterBy();
+            if (filterBy === 0)
+                return this.competitions();
+            else
+               return this.competitions().filter((competition) => {
+                    return (competition.isFinished && filterBy === 1) || (!competition.isFinished && filterBy === 2);
+                });
+        });
         this.refreshResults();
     }
 
