@@ -1,19 +1,20 @@
 ﻿import Competition from "../Models/Competition.js";
 import Competitor from "../Models/Competitor.js";
 import Team from "../Models/Team.js";
-import CompetitorCRUDCacheDecorator from "./Decorators/CompetitorCRUDCache.js";
-import CompetitorCRUDLogDecorator from "./Decorators/CompetitorCRUDLog.js";
-import CompetitionCrud from './CRUD/CompetitionCrud.js';
-import CompetitorCrud from './CRUD/CompetitorCrud.js';
+import CompetitorCRUDCacheDecorator from "./Competitors/CRUDCache.js";
+import CompetitorCRUDLogDecorator from "./Competitors/CRUDLog.js";
+import CompetitionCrud from './Competitions/Crud.js';
+import CompetitorCrud from './Competitors/CRUD.js';
 import ICompetitionService from "./Interfaces/ICompetitionService.js";
 import ICompetitorService from "./Interfaces/ICompetitorService.js";
 import ITeamService from "./Interfaces/ITeamSevice.js";
 import ConsoleLogger from "./ConsoleLogger.js";
-import CompetitionCRUDLogDecorator from "./Decorators/CompetitionCRUDLog.js";
-import CompetitionCRUDCacheDecorator from "./Decorators/CompetitionCRUDCache.js";
-import TeamCRUDLogDecorator from "./Decorators/TeamCRUDLog.js";
-import TeamCRUDCacheDecorator from "./Decorators/TeamCRUDCache.js";
-import TeamCrud from "./CRUD/TeamCrud.js";
+import CompetitionCRUDLogDecorator from "./Competitions/CRUDLog.js";
+import CompetitionCRUDCacheDecorator from "./Competitions/CRUDCache.js";
+import TeamCRUDLogDecorator from "./Teams/CRUDLog.js";
+import TeamCRUDCacheDecorator from "./Teams/CRUDCache.js";
+import TeamCrud from "./Teams/CRUD.js";
+import CommunicationFacade from './CommunicationFacade.js';
 
 export default class LService implements ICompetitionService, ICompetitorService, ITeamService{
     createNewTeam(): Team {
@@ -30,9 +31,10 @@ export default class LService implements ICompetitionService, ICompetitorService
     private TeamCRUD: ICRUD<Team>;
 
     constructor() {
-        this.CompetitorCRUD = new CompetitorCRUDLogDecorator(new CompetitorCRUDCacheDecorator(new CompetitorCrud()), new ConsoleLogger());
-        this.CompetitionCRUD = new CompetitionCRUDLogDecorator(new CompetitionCrud(), new ConsoleLogger());
-        this.TeamCRUD = new TeamCRUDLogDecorator(new TeamCRUDCacheDecorator(new TeamCrud()), new ConsoleLogger());
+        //pass type to communication Competitor, Competition, Team
+        this.CompetitorCRUD = new CompetitorCRUDLogDecorator(new CompetitorCRUDCacheDecorator(new CompetitorCrud(new CommunicationFacade('competitor'))), new ConsoleLogger());
+        this.CompetitionCRUD = new CompetitionCRUDLogDecorator(new CompetitionCRUDCacheDecorator(new CompetitionCrud(new CommunicationFacade('competition'))), new ConsoleLogger());
+        this.TeamCRUD = new TeamCRUDLogDecorator(new TeamCRUDCacheDecorator(new TeamCrud(new CommunicationFacade('team'))), new ConsoleLogger());
     }
 
     getSortedTeams(): Promise<Team[]> {
