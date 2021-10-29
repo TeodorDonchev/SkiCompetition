@@ -7,30 +7,30 @@ export default class CompetitorCRUDLogDecorator implements ICRUD < Competitor > 
 
     }
 
-    Create(element: Competitor): Promise<number> {
-        return this.decoratedObject.Create(element).then((id) => {
+    create(element: Competitor): Promise<number> {
+        return this.decoratedObject.create(element).then((id) => {
             this.logger.log("created element with id: " + id);
             return id;
         });
     }
-    Read(id: number): Promise<Competitor> {
-        return this.decoratedObject.Read(id).then((competitor) => {
+    read(id: number): Promise<Competitor> {
+        return this.decoratedObject.read(id).then((competitor) => {
             this.logger.log("read competitor with id: " + id);
             return competitor;
         })
     }
-    Update(id: number, element: Competitor): Promise<void> {
-        return this.decoratedObject.Update(id, element).then(() => {
+    update(id: number, element: Competitor): Promise<void> {
+        return this.decoratedObject.update(id, element).then(() => {
             this.logger.log("updated competitor with id: " + id);
         })
     }
-    Delete(id: number): Promise<void> {
-        return this.decoratedObject.Delete(id).then(() => {
+    delete(id: number): Promise<void> {
+        return this.decoratedObject.delete(id).then(() => {
             this.logger.log("deleted competitor with id: " + id);
         })
     }
-    ReadAll(): Promise<Competitor[]> {
-        return this.decoratedObject.ReadAll().then((competitors) => {
+    readAll(): Promise<Competitor[]> {
+        return this.decoratedObject.readAll().then((competitors) => {
             this.logger.log("read all competitors");
             return competitors;
         })

@@ -1,4 +1,4 @@
-body{
+body {
     background-color: whitesmoke;
 }
 
@@ -48,13 +48,14 @@ body{
     border-radius: 10px;
     width: 100%;
 }
-.filters, .buttons{
+
+.filters, .buttons {
     margin-top: 2%;
 }
 
-.filters.d-flex.justify-content-between.align-items-center {
-    width: 26%;
-}
+    .filters.d-flex.justify-content-between.align-items-center {
+        width: 26%;
+    }
 
 .clear-filter.btn.btn-primary.rounded-pill.shadow-none {
     line-height: 12.5px;
@@ -62,7 +63,7 @@ body{
     height: 25px;
 }
 
-.custom.btn.rounded-pill.shadow-none{
+.custom.btn.rounded-pill.shadow-none {
     border: 1.5px solid #ddd8d8;
     color: white;
     width: 120px;
@@ -71,12 +72,12 @@ body{
     height: 40px;
 }
 
-    .custom.btn.rounded-pill.shadow-none:hover, .custom.add.btn.rounded-pill.shadow-none:hover {
-        background-color: whitesmoke !important;
-        color: black !important;
-        font-size: 14px;
-        font-weight: bold;
-    }
+.custom.btn.rounded-pill.shadow-none:hover, .custom.btn.rounded-pill.shadow-none.active, .custom.add.btn.rounded-pill.shadow-none:hover {
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-size: 14px;
+    font-weight: bold;
+}
 
 .custom.add.btn.rounded-pill.shadow-none {
     margin-top: 10px;

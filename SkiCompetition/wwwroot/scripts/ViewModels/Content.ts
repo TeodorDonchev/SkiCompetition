@@ -1,6 +1,6 @@
-﻿import LService from "../Services/LService.js";
+﻿import Service from "../Services/Service.js";
 
 export default abstract class ContentVM {
-    constructor(public service: LService) {
+    constructor(public service: Service) {
     }
 }

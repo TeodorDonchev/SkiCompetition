@@ -1,5 +1,5 @@
 ﻿import Team from "../Models/Team.js";
-import LService from "../Services/LService.js";
+import Service from "../Services/Service.js";
 import ContentVM from "./Content.js";
 
 export class TeamsDialogVM {
@@ -9,9 +9,9 @@ export class TeamsDialogVM {
     points: KnockoutObservable<number>;
 
     constructor(private model: Team, private onFinish: (team: Team) => void, private isEdit: boolean = false) {
-        this.name = ko.observable(model.name);
-        this.competitors = ko.observableArray(model.competitors);
-        this.points = ko.observable(model.points);
+        this.name = isEdit ? ko.observable(model.name) : ko.observable();
+        this.competitors = isEdit ? ko.observableArray(model.competitors) : ko.observableArray();
+        this.points = isEdit ? ko.observable(model.points) : ko.observable();
     }
 
     flushResult() {
@@ -27,7 +27,7 @@ export default class TeamVM extends ContentVM {
     activeTeam: KnockoutObservable<TeamsDialogVM>;
     selectedTeam: KnockoutObservable<Team>;
 
-    constructor(service: LService) {
+    constructor(service: Service) {
         super(service);
         this.teams = ko.observableArray([]);
         this.selectedTeam = ko.observable();

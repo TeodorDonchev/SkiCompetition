@@ -9,14 +9,13 @@ class Competition extends BaseModel {
     private _isFinished: boolean;
     private _competitors: Array<number>;
 
-    //remove competitors, isFinished from constructor later
-    constructor(id: number, name: string, date: number, location: string, competitorIds: Array<number> = [], isFinished: boolean = false) {
+    constructor(id: number, name: string, date: number, location: string, competitors: Array<number> = [], isFinished: boolean = false) {
         super();
         this.id = id;
         this.name = name;
         this.date = date;
         this.location = location;
-        this._competitors = competitorIds;
+        this._competitors = competitors;
         this._isFinished = isFinished;
     }
 

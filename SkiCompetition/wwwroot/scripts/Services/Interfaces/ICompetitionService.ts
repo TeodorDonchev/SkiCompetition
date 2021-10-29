@@ -1,9 +1,9 @@
 ﻿import Competition from "../../Models/Competition.js";
 
 export default interface ICompetitionService {
-    getAllCompetition(): Promise<Competition[]>;
-    CreateCompetition(element: Competition): Promise<number>;
-    ReadCompetition(id: number): Promise<Competition>;
-    UpdateCompetition(id: number, element: Competition): Promise<void>;
-    DeleteCompetition(id: number): Promise<void>;
+    getAllCompetitions(): Promise<Competition[]>;
+    createCompetition(element: Competition): Promise<number>;
+    readCompetition(id: number): Promise<Competition>;
+    updateCompetition(id: number, element: Competition): Promise<void>;
+    deleteCompetition(id: number): Promise<void>;
 }

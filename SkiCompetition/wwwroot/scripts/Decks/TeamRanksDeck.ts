@@ -1,13 +1,13 @@
-﻿import LService from "../Services/LService.js";
+﻿import Service from "../Services/Service.js";
 import TeamRanksVM from "../ViewModels/TeamRanks.js";
 import Deck from "./Deck.js";
 
 export default class TeamRanksDeck extends Deck {
-    constructor(service: LService) {
+    constructor(service: Service) {
         super('Team Ranks', service);
     }
 
-    getContentVM(service: LService) {
+    getContentVM(service: Service) {
         return new TeamRanksVM(service);
     }
 }

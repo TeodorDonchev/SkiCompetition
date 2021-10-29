@@ -6,16 +6,16 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
     constructor(private decoratedObject: ICRUD<Competition>) {
         this.competitionCache = [];
     }
-    Create(element: Competition): Promise<number> {
+    create(element: Competition): Promise<number> {
         return new Promise((resolve, reject) => {
-            this.decoratedObject.Create(element)
+            this.decoratedObject.create(element)
                 .then((id) => {
                     this.competitionCache.push(element);
                     resolve(id);
                 }, reject);
         })
     }
-    Read(id: number): Promise<Competition> {
+    read(id: number): Promise<Competition> {
         return new Promise((resolve, reject) => {
             let found = this.competitionCache.find((cc) => cc.id === id);
 
@@ -23,18 +23,18 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
                 return resolve(found);
             }
 
-            this.decoratedObject.Read(id)
+            this.decoratedObject.read(id)
                 .then((competition) => {
                     this.competitionCache.push(competition);
                     resolve(competition);
                 }, reject);
         });
     }
-    Update(id: number, element: Competition): Promise<void> {
+    update(id: number, element: Competition): Promise<void> {
         return new Promise((resolve, reject) => {
             let found = this.competitionCache.find((cc) => cc.id === id);
 
-            this.decoratedObject.Update(id, element).then(() => {
+            this.decoratedObject.update(id, element).then(() => {
                 if (found) {
                     let index = this.competitionCache.indexOf(found);
                     this.competitionCache[index] = element;
@@ -45,11 +45,11 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
             }, reject);
         });
     }
-    Delete(id: number): Promise<void> {
+    delete(id: number): Promise<void> {
         return new Promise((resolve, reject) => {
             let found = this.competitionCache.find((cc) => cc.id === id);
 
-            this.decoratedObject.Delete(id).then(() => {
+            this.decoratedObject.delete(id).then(() => {
                 if (found) {
                     let index = this.competitionCache.indexOf(found);
                     this.competitionCache.splice(index, 1);
@@ -58,9 +58,9 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
             }, reject);
         });
     }
-    ReadAll(): Promise<Competition[]> {
+    readAll(): Promise<Competition[]> {
         return new Promise((resolve, reject) => {
-            this.decoratedObject.ReadAll().then((competitions) => {
+            this.decoratedObject.readAll().then((competitions) => {
                 resolve(competitions);
             }, reject);
         });

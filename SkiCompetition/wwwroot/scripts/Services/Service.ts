@@ -16,7 +16,7 @@ import TeamCRUDCacheDecorator from "./Teams/CRUDCache.js";
 import TeamCrud from "./Teams/CRUD.js";
 import CommunicationFacade from './CommunicationFacade.js';
 
-export default class LService implements ICompetitionService, ICompetitorService, ITeamService{
+export default class Service implements ICompetitionService, ICompetitorService, ITeamService {
     createNewTeam(): Team {
         return new Team(-1, 'Team', 0);
     }
@@ -31,104 +31,95 @@ export default class LService implements ICompetitionService, ICompetitorService
     private TeamCRUD: ICRUD<Team>;
 
     constructor() {
-        //pass type to communication Competitor, Competition, Team
         this.CompetitorCRUD = new CompetitorCRUDLogDecorator(new CompetitorCRUDCacheDecorator(new CompetitorCrud(new CommunicationFacade<Competitor>('competitor'))), new ConsoleLogger());
         this.CompetitionCRUD = new CompetitionCRUDLogDecorator(new CompetitionCRUDCacheDecorator(new CompetitionCrud(new CommunicationFacade<Competition>('competition'))), new ConsoleLogger());
         this.TeamCRUD = new TeamCRUDLogDecorator(new TeamCRUDCacheDecorator(new TeamCrud(new CommunicationFacade<Team>('team'))), new ConsoleLogger());
     }
 
+    getCompetitorsInCompetition(competitorsIds: number[]): Promise<Competitor[]> {
+        return new Promise((resolve, reject) => {
+            this.getAllCompetitors().then((competitors) => {
+                let competitorsInCompetition = [];
+                competitors.forEach((competitor) => {
+                    let index = competitorsIds.indexOf(competitor.id);
+                    if (index !== -1) {
+                        competitorsInCompetition.push(competitor);
+                    }
+                })
+
+                resolve(competitorsInCompetition);
+            })
+        });
+    }
+
     getSortedTeams(): Promise<Team[]> {
-        return this.TeamCRUD.ReadAll().then((teams) => {
+        return this.TeamCRUD.readAll().then((teams) => {
             return teams.sort((a, b) => b.points - a.points);
         });
     }
 
-    getSortedFemaleCompetitors(): Promise<Competitor[]> {
-        return this.CompetitorCRUD.ReadAll().then((competitors) => {
-            return competitors.filter((competitor) => competitor.sex === 'Female').sort((a, b) => b.points - a.points);
-        });
-    }
-
-    getSortedMaleCompetitors(): Promise<Competitor[]> {
-        return this.CompetitorCRUD.ReadAll().then((competitors) => {
-            return competitors.filter((competitor) => competitor.sex === 'Male').sort((a, b) => b.points - a.points);
-        });
-    }
-
-    getPastCompetitions(): Promise<Competition[]> {
-        return this.CompetitionCRUD.ReadAll().then((competitions) => {
-            return competitions.filter((competition) => competition.isFinished);
-        });
-    }
-
-    getUpcomingCompetitions(): Promise<Competition[]> {
-        return this.CompetitionCRUD.ReadAll().then((competitions) => {
-            return competitions.filter((competition) => !competition.isFinished);
-        });
-    }
-
     getAllTeams(): Promise<Team[]> {
-        return this.TeamCRUD.ReadAll().then((teams) => {
+        return this.TeamCRUD.readAll().then((teams) => {
             return teams;
         });
     }
     createTeam(element: Team): Promise<number> {
-        return this.TeamCRUD.Create(element).then((id) => {
+        return this.TeamCRUD.create(element).then((id) => {
             return id;
         });
     }
     readTeam(id: number): Promise<Team> {
-        return this.TeamCRUD.Read(id).then((team) => {
+        return this.TeamCRUD.read(id).then((team) => {
             return team;
         });
     }
     updateTeam(id: number, element: Team): Promise<void> {
-        return this.TeamCRUD.Update(id, element);
+        return this.TeamCRUD.update(id, element);
     }
     deleteTeam(id: number): Promise<void> {
-        return this.TeamCRUD.Delete(id);
+        return this.TeamCRUD.delete(id);
     }
     getAllCompetitors(): Promise<Competitor[]> {
-        return this.CompetitorCRUD.ReadAll().then((competitors) => {
+        return this.CompetitorCRUD.readAll().then((competitors) => {
             return competitors;
         })
     }
-    CreateCompetitor(element: Competitor): Promise<number> {
-        return this.CompetitorCRUD.Create(element).then((id) => {
+    createCompetitor(element: Competitor): Promise<number> {
+        return this.CompetitorCRUD.create(element).then((id) => {
             return id;
         })
     }
-    ReadCompetitor(id: number): Promise<Competitor> {
-        return this.CompetitorCRUD.Read(id).then((competitor) => {
+    readCompetitor(id: number): Promise<Competitor> {
+        return this.CompetitorCRUD.read(id).then((competitor) => {
             return competitor;
         })
     }
-    UpdateCompetitor(id: number, element: Competitor): Promise<void> {
-        return this.CompetitorCRUD.Update(id, element);
+    updateCompetitor(id: number, element: Competitor): Promise<void> {
+        return this.CompetitorCRUD.update(id, element);
     }
-    DeleteCompetitor(id: number): Promise<void> {
-        return this.CompetitorCRUD.Delete(id);
+    deleteCompetitor(id: number): Promise<void> {
+        return this.CompetitorCRUD.delete(id);
     }
-    getAllCompetition(): Promise<Competition[]> {
-        return this.CompetitionCRUD.ReadAll().then((competitions)=> {
+    getAllCompetitions(): Promise<Competition[]> {
+        return this.CompetitionCRUD.readAll().then((competitions) => {
             return competitions;
         });
     }
-    CreateCompetition(element: Competition): Promise<number> {
-        return this.CompetitionCRUD.Create(element).then((id) => {
+    createCompetition(element: Competition): Promise<number> {
+        return this.CompetitionCRUD.create(element).then((id) => {
             return id;
         });
     }
-    ReadCompetition(id: number): Promise<Competition> {
-        return this.CompetitionCRUD.Read(id).then((competition) => {
+    readCompetition(id: number): Promise<Competition> {
+        return this.CompetitionCRUD.read(id).then((competition) => {
             return competition;
         });
     }
-    UpdateCompetition(id: number, element: Competition): Promise<void> {
-        return this.CompetitionCRUD.Update(id, element);
+    updateCompetition(id: number, element: Competition): Promise<void> {
+        return this.CompetitionCRUD.update(id, element);
     }
-    DeleteCompetition(id: number): Promise<void> {
-        return this.CompetitionCRUD.Delete(id);
+    deleteCompetition(id: number): Promise<void> {
+        return this.CompetitionCRUD.delete(id);
     }
 
 }

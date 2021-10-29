@@ -1,5 +1,6 @@
 ﻿import Competitor from "../Models/Competitor.js";
-import LService from "../Services/LService.js";
+import Team from "../Models/Team.js";
+import Service from "../Services/Service.js";
 import ContentVM from "./Content.js";
 
 export class CompetitorsDialogVM {
@@ -12,14 +13,14 @@ export class CompetitorsDialogVM {
     teamId: KnockoutObservable<number>;
     competitions: KnockoutObservableArray<number>;
 
-    constructor(private model: Competitor, private onFinish: (competitor: Competitor) => void, private isEdit: boolean = false) {
-        this.firstName = ko.observable(model.firstName);
-        this.lastName = ko.observable(model.lastName);
-        this.sex = ko.observable(model.sex);
-        this.time = ko.observable(model.time);
-        this.points = ko.observable(model.points);
-        this.teamId = ko.observable(model.teamId);
-        this.competitions = ko.observableArray(model.competitions);
+    constructor(private model: Competitor, private onFinish: (competitor: Competitor) => void, private isEdit: boolean = false, private teams: Team[] = []) {
+        this.firstName = isEdit ? ko.observable(model.firstName) : ko.observable();
+        this.lastName = isEdit ? ko.observable(model.lastName) : ko.observable();
+        this.sex = isEdit ? ko.observable(model.sex) : ko.observable();
+        this.time = isEdit ? ko.observable(model.time) : ko.observable();
+        this.points = isEdit ? ko.observable(model.points) : ko.observable();
+        this.teamId = isEdit ? ko.observable(model.teamId) : ko.observable();
+        this.competitions = isEdit ? ko.observableArray(model.competitions) : ko.observableArray();
     }
 
     flushResult() {
@@ -39,35 +40,37 @@ export class CompetitorsDialogVM {
 
 export default class CompetitorVM extends ContentVM {
     competitors: KnockoutObservableArray<Competitor>;
+    teams: KnockoutObservableArray<Team>;
     activeCompetitor: KnockoutObservable<CompetitorsDialogVM>;
     selectedCompetitor: KnockoutObservable<Competitor>;
 
-    constructor(service: LService) {
+    constructor(service: Service) {
         super(service);
         this.competitors = ko.observableArray([]);
-        this.activeCompetitor = ko.observable(null);
+         this.activeCompetitor = ko.observable(null);
         this.selectedCompetitor = ko.observable();
+        this.service.getAllTeams().then((teams) => {
+            this.teams = ko.observableArray(teams);
+        });
         this.refreshResults();
     }
 
     createNewCompetitor() {
         this.activeCompetitor(new CompetitorsDialogVM(this.service.CreateNewCompetitor(), (newCompetitor: Competitor) => {
-            this.service.CreateCompetitor(newCompetitor).then((id) => {
-                //this.refreshResults();
-                this.competitors.push(newCompetitor);
+            this.service.createCompetitor(newCompetitor).then((id) => {
+                this.refreshResults();
                 this.activeCompetitor(null);
             });
-        }));
+        }, false, this.teams()));
     }
 
     editCompetitor(editedCompetitor: Competitor) {
         this.activeCompetitor(new CompetitorsDialogVM(editedCompetitor, (updatedCompetitor: Competitor) => {
-            this.service.UpdateCompetitor(editedCompetitor.id, editedCompetitor).then((id) => {
-                //this.refreshResults();
-                this.competitors.replace(editedCompetitor, updatedCompetitor);
+            this.service.updateCompetitor(editedCompetitor.id, editedCompetitor).then((id) => {
+                this.refreshResults();
                 this.activeCompetitor(null);
             });
-        }, true));
+        }, true, this.teams()));
     }
 
     refreshResults() {

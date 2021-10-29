@@ -1,5 +1,5 @@
 ﻿import Team from "../Models/Team.js";
-import LService from "../Services/LService.js";
+import Service from "../Services/Service.js";
 import ContentVM from "./Content.js";
 
 export default class TeamRanksVM extends ContentVM {
@@ -7,7 +7,7 @@ export default class TeamRanksVM extends ContentVM {
     sortedTeams: KnockoutObservableArray<Team>;
     selectedTeam: KnockoutObservable<Team>;
 
-    constructor(service: LService) {
+    constructor(service: Service) {
         super(service);
         this.models = [];
         this.sortedTeams = ko.observableArray([]);

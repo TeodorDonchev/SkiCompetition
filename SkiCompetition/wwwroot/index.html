@@ -30,16 +30,15 @@
     <div class="custom d-flex align-items-center justify-content-center bg-primary">
         <ul class="custom nav nav-pills" data-bind="foreach: Decks">
             <li class="custom nav-item" data-bind="click: $parent.ActiveDeck, css:{'active': $parent.ActiveDeck() == $data }">
-                <a class="nav-link text-white" href="#" data-bind="text: $data.Name"></a>
+                <a class="nav-link text-white" href="#" data-bind="text: $data.name"></a>
             </li>
         </ul>
     </div>
 
     <!--ko with: ActiveDeck -->
-    <div data-bind="template:{name:  Name + '-template', data: contentVM}"></div>
+    <div data-bind="template:{name:  name + '-Template', data: contentVM}"></div>
     <!--/ko-->
-
-    <script type="text/html" id="Competitions-template">
+    <script type="text/html" id="Competitions-Template">
         <div class="d-flex justify-content-around">
             <div class="container-fluid">
                 <div class="custom controllers d-flex justify-content-around">
@@ -76,59 +75,62 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: name">
+                                        <input type="text" class="form-control" data-bind="value: name" placeholder="Enter name...">
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Location:</label>
-                                        <input type="text" class="form-control" data-bind="value: location">
+                                        <input type="text" class="form-control" data-bind="value: location" placeholder="Enter location...">
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Start Date:</label>
                                         <input type="date" class="form-control" data-bind="value: date">
                                     </div>
+                                    <!--ko if:isEdit-->
+                                    <div class="form-group">
+                                        <label class="col-form-label">Competitors:</label>
+                                        <div class="custom table-responsive overflow-auto">
+                                            <table class="table">
+                                                <thead class="custom table-light">
+                                                    <tr>
+                                                        <th scope="col">Place</th>
+                                                        <th scope="col">First name</th>
+                                                        <th scope="col">Last name</th>
+                                                        <th scope="col">Team</th>
+                                                        <th scope="col">Points</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody data-bind="foreach: competitorModels()">
+                                                    <tr>
+                                                        <td data-bind="text: $index"></td>
+                                                        <td data-bind="text: $data.firstName"></td>
+                                                        <td data-bind="text: $data.lastName"></td>
+                                                        <td data-bind="text: $data.teamId"></td>
+                                                        <td data-bind="text: $data.points"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!--/ko-->
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         <button type="button" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
                                     </div>
                                 </form>
-                                <!--ko if:isEdit-->
-                                <table>
-                                    this is my table
-                                </table>
-                                <!--/ko-->
                             </div>
                             <!--/ko-->
                         </div>
                     </div>
                 </div>
-                <ul class="custom card-list" data-bind="template:{name:'competition-card', foreach: filteredCompetitions}">
+                <ul class="custom card-list" data-bind="template:{name:'Competition-Card', foreach: filteredCompetitions}">
                 </ul>
 
-                <!--<div class="custom table-responsive overflow-auto">
-                    <table class="table">
-                        <thead class="custom table-light">
-                            <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Location</th>
-                                <th scope="col">Competition</th>
-                                <th scope="col">Competitors</th>
-                            </tr>
-                        </thead>
-                        <tbody data-bind="foreach: $parent.Competitions">
-                            <tr>
-                                <td data-bind="text: $data.date"></td>
-                                <td data-bind="text: $data.location"></td>
-                                <td data-bind="text: $data.name"></td>
-                                <td data-bind="text: $data.competitors.length"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>-->
+
             </div>
         </div>
     </script>
 
-    <script type="text/html" id="competition-card">
+    <script type="text/html" id="Competition-Card">
         <li data-bind="click: () => { $parent.editCompetition($data)}" data-bs-toggle="modal" data-bs-target="#addCompetition">
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">
@@ -145,11 +147,7 @@
 
     </script>
 
-    <script type="text/html" id="DetailedCompetition-template">
-        <h1>Test</h1>
-    </script>
-
-    <script type="text/html" id="Competitors-template">
+    <script type="text/html" id="Competitors-Template">
         <div class="d-flex justify-content-center">
             <div class="container-fluid">
                 <div class="custom controllers d-flex justify-content-center">
@@ -178,25 +176,25 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">First Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: firstName">
+                                        <input type="text" class="form-control" placeholder="Enter first name..." data-bind="value: firstName">
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Last Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: lastName">
+                                        <input type="text" class="form-control" placeholder="Enter last name..." data-bind="value: lastName">
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Sex:</label>
-                                        <select class="custom-select form-control" id="inputGroupSelect01">
-                                            <option value="" selected disabled hidden>Select...</option>
-                                            <option value="1">Female</option>
-                                            <option value="2">Male</option>
+                                        <select class="custom-select form-control" id="inputGroupSelect01" data-bind="options: ['Female', 'Male'], value: sex">
+                                            <!--<option value="" selected disabled hidden>Select...</option>-->
+                                            <!--<option value="1">Female</option>
+                                            <option value="2">Male</option>-->
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Team:</label>
-                                        <select class="custom-select form-control" id="inputGroupSelect02" data-bind="foreach: $parent.Teams">
-                                            <option value="" selected disabled hidden>Select...</option>
-                                            <option value="$data.id" data-bind="text: $data.name"></option>
+                                        <select class="custom-select form-control" id="inputGroupSelect02" data-bind="options: teams,  optionsText: 'name', optionsValue: 'id', value: teamId">
+                                            <!--<option value="" selected disabled hidden>Select...</option>-->
+                                            <!--try foreach-->
                                         </select>
                                     </div>
                                     <div class="modal-footer">
@@ -210,13 +208,13 @@
                     </div>
                 </div>
 
-                <ul class="custom card-list" data-bind="template:{name:'competitor-card', foreach: competitors}"> </ul>
+                <ul class="custom card-list" data-bind="template:{name:'Competitor-Card', foreach: competitors}"> </ul>
             </div>
         </div>
 
     </script>
 
-    <script type="text/html" id="competitor-card">
+    <script type="text/html" id="Competitor-Card">
         <li data-bind="click: () => { $parent.editCompetitor($data)}" data-bs-toggle="modal" data-bs-target="#addCompetitor">
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">
@@ -231,7 +229,7 @@
         </li>
     </script>
 
-    <script type="text/html" id="Teams-template">
+    <script type="text/html" id="Teams-Template">
         <div class="d-flex justify-content-center">
             <div class="container-fluid">
                 <div class="custom controllers d-flex justify-content-center">
@@ -260,7 +258,7 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">Name:</label>
-                                        <input type="text" class="form-control" data-bind="value: name">
+                                        <input type="text" class="form-control" placeholder="Enter name..." data-bind="value: name">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -272,14 +270,14 @@
                         </div>
                     </div>
                 </div>
-                <ul class="custom card-list" data-bind="template:{name:'team-card', foreach: teams}">
+                <ul class="custom card-list" data-bind="template:{name:'Team-Card', foreach: teams}">
                 </ul>
             </div>
         </div>
 
     </script>
 
-    <script type="text/html" id="team-card">
+    <script type="text/html" id="Team-Card">
         <li data-bind="click: () => { $parent.editTeam($data)}" data-bs-toggle="modal" data-bs-target="#addTeam">
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">
@@ -293,13 +291,13 @@
         </li>
     </script>
 
-    <script type="text/html" id="Personal Ranks-template">
+    <script type="text/html" id="Personal Ranks-Template">
         <div class="d-flex justify-content-center">
             <div class="container-fluid">
                 <div class="custom controllers d-flex justify-content-around">
                     <div class="filters">
-                        <button type="button" class="custom btn rounded-pill shadow-none">FEMALE</button>
-                        <button type="button" class="custom btn rounded-pill shadow-none">MALE</button>
+                        <button type="button" data-bind="click: ()=> filterBy(0), css:{'active': filterBy()===0}" class="custom btn rounded-pill shadow-none">FEMALE</button>
+                        <button type="button" data-bind="click: ()=> filterBy(1), css:{'active': filterBy()===1}" class="custom btn rounded-pill shadow-none">MALE</button>
                     </div>
                     <div class="buttons">
                         <div class="search">
@@ -313,15 +311,14 @@
                     </div>
                 </div>
 
-                <ul class="custom card-list" data-bind="template:{name:'personal-rank-card', foreach: sortedFemaleCompetitors}">
+                <ul class="custom card-list" data-bind="template:{name:'Personal Ranks-Card', foreach: sortedCompetitors}">
                 </ul>
-                <!--TODO: sortedMaleCompetitors-->
 
             </div>
         </div>
     </script>
 
-    <script type="text/html" id="personal-rank-card">
+    <script type="text/html" id="Personal Ranks-Card">
         <li>
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">
@@ -335,7 +332,7 @@
         </li>
     </script>
 
-    <script type="text/html" id="Team Ranks-template">
+    <script type="text/html" id="Team Ranks-Template">
         <div class="d-flex justify-content-center">
             <div class="container-fluid">
                 <div class="custom controllers d-flex justify-content-center">
@@ -351,14 +348,14 @@
                     </div>
                 </div>
 
-                <ul class="custom card-list" data-bind="template:{name:'team-rank-card', foreach: sortedTeams}">
+                <ul class="custom card-list" data-bind="template:{name:'Team Ranks-Card', foreach: sortedTeams}">
                 </ul>
             </div>
         </div>
 
     </script>
 
-    <script type="text/html" id="team-rank-card">
+    <script type="text/html" id="Team Ranks-Card">
         <li>
             <div class="custom card shadow bg-white rounded" style="width: 18rem;">
                 <div class="custom card-body">

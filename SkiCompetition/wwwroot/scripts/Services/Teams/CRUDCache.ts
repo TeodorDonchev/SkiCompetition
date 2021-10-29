@@ -8,33 +8,33 @@ export default class TeamCRUDCacheDecorator implements ICRUD<Team>{
 
         this.teamCache = [];
     }
-    Create(element: Team): Promise<number> {
+    create(element: Team): Promise<number> {
         return new Promise((resolve, reject) => {
-            this.decoratedObject.Create(element)
+            this.decoratedObject.create(element)
                 .then(id => {
                     this.teamCache.push(element);
                     resolve(id);
                 }, reject);
         })
     }
-    Read(id: number): Promise<Team> {
+    read(id: number): Promise<Team> {
         return new Promise((resolve, reject) => {
             let found = this.teamCache.find((team) => team.id === id)
             if (found) {
                 return resolve(found);
             }
-            this.decoratedObject.Read(id)
+            this.decoratedObject.read(id)
                 .then((servedObject) => {
                     this.teamCache.push(servedObject);
                     resolve(servedObject);
                 }, reject);
         });
     }
-    Update(id: number, element: Team): Promise<void> {
+    update(id: number, element: Team): Promise<void> {
         return new Promise((resolve, reject) => {
             let found = this.teamCache.find((team) => team.id === id);
 
-            this.decoratedObject.Update(id, element)
+            this.decoratedObject.update(id, element)
                 .then(() => {
                     if (found) {
                         let index = this.teamCache.indexOf(found);
@@ -46,11 +46,11 @@ export default class TeamCRUDCacheDecorator implements ICRUD<Team>{
                 }, reject);
         });
     }
-    Delete(id: number): Promise<void> {
+    delete(id: number): Promise<void> {
         return new Promise((resolve, reject) => {
             let found = this.teamCache.find((team) => team.id === id);
 
-            this.decoratedObject.Delete(id)
+            this.decoratedObject.delete(id)
                 .then(() => {
                     if (found) {
                         let index = this.teamCache.indexOf(found);
@@ -60,9 +60,9 @@ export default class TeamCRUDCacheDecorator implements ICRUD<Team>{
                 }, reject);
         });
     }
-    ReadAll(): Promise<Team[]> {
+    readAll(): Promise<Team[]> {
         return new Promise((resolve, reject) => {
-            this.decoratedObject.ReadAll()
+            this.decoratedObject.readAll()
                 .then((teams) => {
                     resolve(teams);
                 }, reject);

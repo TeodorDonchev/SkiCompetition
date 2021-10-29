@@ -1,14 +1,14 @@
-﻿import LService from "../Services/LService.js";
+﻿import Service from "../Services/Service.js";
 import CompetitorVM from "../ViewModels/Competitor.js";
 import ContentVM from "../ViewModels/Content.js";
 import Deck from "./Deck.js";
 
 export default class CompetitorDeck extends Deck {
-    constructor(service: LService) {
+    constructor(service: Service) {
         super('Competitors', service);
     }
-    getContentVM(service: LService): ContentVM {
+
+    getContentVM(service: Service): ContentVM {
         return new CompetitorVM(service);
     }
-
 }
