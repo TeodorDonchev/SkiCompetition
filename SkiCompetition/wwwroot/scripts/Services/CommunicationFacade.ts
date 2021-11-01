@@ -4,11 +4,11 @@
     private setURL: () => void;
 
     constructor(private extension: string) {
-        this._url = 'https://40a7d272-83ea-401c-bc97-83ae98af35cd.mock.pstmn.io/api/' + this.extension;
+        this._url = 'https://b0400ec1-21aa-4162-b418-237f66c884c0.mock.pstmn.io/api/' + this.extension;
         this._query = '';
 
         this.setURL = function (): void {
-            this._url = this._query ? this._url + this._query : 'https://40a7d272-83ea-401c-bc97-83ae98af35cd.mock.pstmn.io/api/' + this.extension;
+            this._url = this._query ? this._url + this._query : 'https://b0400ec1-21aa-4162-b418-237f66c884c0.mock.pstmn.io/api/' + this.extension;
         }
     }
 
