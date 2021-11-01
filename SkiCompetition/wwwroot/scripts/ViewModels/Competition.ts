@@ -47,7 +47,12 @@ export default class CompetitionsVM extends ContentVM {
                     return (competition.isFinished && filterBy === 1) || (!competition.isFinished && filterBy === 2);
                 });
         });
-        this.refreshResults();
+        this.refreshResults = function () {
+            this.service.getAllCompetitions()
+                .then((competitions) => {
+                    this.competitions(competitions);
+                });
+        };
     }
 
     createNewCompetition() {
@@ -73,10 +78,7 @@ export default class CompetitionsVM extends ContentVM {
 
     }
 
-    refreshResults() {
-        this.service.getAllCompetitions()
-            .then((competitions) => {
-                this.competitions(competitions);
-            });
-    }
+    //refreshResults() {
+       
+    //}
 }

@@ -22,7 +22,7 @@ export class TeamsDialogVM {
     }
 }
 export default class TeamVM extends ContentVM {
-    
+
     teams: KnockoutObservableArray<Team>;
     activeTeam: KnockoutObservable<TeamsDialogVM>;
     selectedTeam: KnockoutObservable<Team>;
@@ -33,7 +33,12 @@ export default class TeamVM extends ContentVM {
         this.selectedTeam = ko.observable();
         this.activeTeam = ko.observable(null);
 
-        this.refreshResults();
+        this.refreshResults = function () {
+            this.service.getAllTeams()
+                .then((teams) => {
+                    this.teams(teams);
+                });
+        };
     }
 
     createNewTeam() {
@@ -53,12 +58,5 @@ export default class TeamVM extends ContentVM {
                 this.activeTeam(null);
             });
         }, true));
-    }
-
-    refreshResults() {
-        this.service.getAllTeams()
-            .then((teams) => {
-                this.teams(teams);
-            });
     }
 }

@@ -1,4 +1,4 @@
-﻿import CompetitionDeck  from "./Decks/CompetitionDeck.js";
+﻿import CompetitionDeck from "./Decks/CompetitionDeck.js";
 import CompetitorDeck from "./Decks/CompetitorDeck.js";
 import Deck from "./Decks/Deck.js";
 import PersonalRanksDeck from "./Decks/PersonalRanksDeck.js";
@@ -15,7 +15,7 @@ export default class MotherShipVM {
 
     constructor() {
         this.Service = new Service();
-      
+
         this.Decks = [
             new CompetitionDeck(this.Service),
             new CompetitorDeck(this.Service),
@@ -23,6 +23,12 @@ export default class MotherShipVM {
             new PersonalRanksDeck(this.Service),
             new TeamRanksDeck(this.Service),
         ];
-        this.ActiveDeck = ko.observable(this.Decks[0]);
+        this.ActiveDeck = ko.observable();
+
+        this.ActiveDeck.subscribe((newValue) => {
+            newValue.contentVM.refreshResults();
+        });
+
+        this.ActiveDeck(this.Decks[0]);
     }
 }

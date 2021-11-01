@@ -14,19 +14,18 @@ export default class PersonalRanksVM extends ContentVM {
         this.models = [];
         this.competitors = ko.observableArray([]);
         this.filterBy = ko.observable(0);
-        this.refreshResults();
 
         this.sortedCompetitors = ko.computed(() => {
             return this.competitors().filter((competitor) => {
                 return (competitor.sex === 'Female' && this.filterBy() === 0) || (competitor.sex === 'Male' && this.filterBy() === 1);
             }).sort((a, b) => b.points - a.points);
         });
-    }
 
-    refreshResults() {
-        this.service.getAllCompetitors()
-            .then((competitors) => {
-                this.competitors(competitors);
-            });
+        this.refreshResults = function () {
+            this.service.getAllCompetitors()
+                .then((competitors) => {
+                    this.competitors(competitors);
+                });
+        }
     }
 }

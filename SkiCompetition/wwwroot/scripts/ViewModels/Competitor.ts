@@ -47,12 +47,19 @@ export default class CompetitorVM extends ContentVM {
     constructor(service: Service) {
         super(service);
         this.competitors = ko.observableArray([]);
-         this.activeCompetitor = ko.observable(null);
+        this.activeCompetitor = ko.observable(null);
         this.selectedCompetitor = ko.observable();
-        this.service.getAllTeams().then((teams) => {
-            this.teams = ko.observableArray(teams);
-        });
-        this.refreshResults();
+
+
+        this.refreshResults = function () {
+            this.service.getAllCompetitors()
+                .then((competitors) => {
+                    this.competitors(competitors);
+                });
+            this.service.getAllTeams().then((teams) => {
+                this.teams = ko.observableArray(teams);
+            });
+        };
     }
 
     createNewCompetitor() {
@@ -71,12 +78,5 @@ export default class CompetitorVM extends ContentVM {
                 this.activeCompetitor(null);
             });
         }, true, this.teams()));
-    }
-
-    refreshResults() {
-        this.service.getAllCompetitors()
-            .then((competitors) => {
-                this.competitors(competitors);
-            });
     }
 }
