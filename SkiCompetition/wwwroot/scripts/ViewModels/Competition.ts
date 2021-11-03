@@ -7,16 +7,21 @@ export class CompetitionsDialogVM {
 
     name: KnockoutObservable<string>;
     location: KnockoutObservable<string>;
-    date: KnockoutObservable<number>;
+    date: KnockoutObservable<string>;
     competitors: KnockoutObservableArray<number>;
     competitorModels: KnockoutObservableArray<Competitor>;
 
     constructor(private model: Competition, private onFinish: (competition: Competition) => void, private isEdit: boolean = false, private competitorsInCompetition: Competitor[] = []) {
+        if (isEdit) {
+            let dateArr = model.date.split('/');
+            this.model.date = dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1];
+        }
         this.name = this.isEdit ? ko.observable(this.model.name) : ko.observable();
         this.location = this.isEdit ? ko.observable(this.model.location) : ko.observable();
         this.date = this.isEdit ? ko.observable(this.model.date) : ko.observable();
         this.competitors = this.isEdit ? ko.observableArray(this.model.competitors) : ko.observableArray();
         this.competitorModels = this.isEdit ? ko.observableArray(this.competitorsInCompetition) : ko.observableArray();
+        console.log('date: ', this.date());
     }
 
     flushResult() {
@@ -50,6 +55,10 @@ export default class CompetitionsVM extends ContentVM {
         this.refreshResults = function () {
             this.service.getAllCompetitions()
                 .then((competitions) => {
+                    //competitions = competitions.map((c) => {
+                    //    return ({ id: c.id, name: c.name, location: c.location, date: c.date.split('-').reverse().join('/'), competitors: c.competitors, isFinished: c.isFinished });
+                    //});
+                    console.log(competitions);
                     this.competitions(competitions);
                 });
         };

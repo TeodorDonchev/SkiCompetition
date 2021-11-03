@@ -24,7 +24,7 @@ export default class Service implements ICompetitionService, ICompetitorService,
         return new Competitor(-1, 'New', 'Competitor', 'Female', -1, 0, 0);
     }
     createNewCompetition(): any {
-        return new Competition(-1, 'New Competition', Date.now(), 'Location');
+        return new Competition(-1, 'New Competition', '01.01.2022', 'Location');
     }
     private CompetitorCRUD: ICRUD<Competitor>;
     private CompetitionCRUD: ICRUD<Competition>;

@@ -4,12 +4,12 @@ import BaseModel from './BaseModel.js';
 class Competition extends BaseModel {
     private _id: number;
     private _name: string;
-    private _date: number;
+    private _date: string;
     private _location: string;
     private _isFinished: boolean;
     private _competitors: Array<number>;
 
-    constructor(id: number, name: string, date: number, location: string, competitors: Array<number> = [], isFinished: boolean = false) {
+    constructor(id: number, name: string, date: string, location: string, competitors: Array<number> = [], isFinished: boolean = false) {
         super();
         this.id = id;
         this.name = name;
@@ -52,7 +52,7 @@ class Competition extends BaseModel {
         this._name = value;
     }
 
-    public set date(value: number) {
+    public set date(value: string) {
         this._date = value;
     }
 
