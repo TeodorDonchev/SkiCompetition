@@ -1,0 +1,63 @@
+﻿<div class="d-flex justify-content-center">
+    <div class="container-fluid">
+        <div class="custom controllers d-flex justify-content-center">
+            <div class="buttons">
+                <div class="search">
+                    <div class="custom input-group rounded">
+                        <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
+                        <button type="button" class="btn bg-color-db shadow-none">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <button data-bind="click:()=> createNewCompetitor()" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetitor">COMPETITOR +</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addCompetitor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!--ko with: activeCompetitor()-->
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-bind="text: isEdit?'Edit Competitor':'Add Competitor'" id="staticBackdropLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">First Name:</label>
+                                <input type="text" class="form-control" placeholder="Enter first name..." data-bind="value: firstName">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Last Name:</label>
+                                <input type="text" class="form-control" placeholder="Enter last name..." data-bind="value: lastName">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Sex:</label>
+                                <select class="custom-select form-control" id="inputGroupSelect01" data-bind="options: ['Female', 'Male'], value: sex">
+                                    <!--<option value="" selected disabled hidden>Select...</option>-->
+                                    <!--<option value="1">Female</option>
+                                    <option value="2">Male</option>-->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Team:</label>
+                                <select class="custom-select form-control" id="inputGroupSelect02" data-bind="options: teams,  optionsText: 'name', optionsValue: 'id', value: teamId">
+                                    <!--<option value="" selected disabled hidden>Select...</option>-->
+                                    <!--try foreach-->
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--/ko-->
+                </div>
+            </div>
+        </div>
+
+        <ul class="custom card-list" data-bind="template:{name:'Competitor-Card', foreach: competitors}"> </ul>
+    </div>
+</div>

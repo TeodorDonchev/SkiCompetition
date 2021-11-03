@@ -1,0 +1,12 @@
+﻿<li data-bind="click: () => { $parent.editCompetitor($data)}" data-bs-toggle="modal" data-bs-target="#addCompetitor">
+    <div class="custom card shadow bg-white rounded" style="width: 18rem;">
+        <div class="custom card-body">
+            <h5 class="card-title text-center" data-bind="text: $data.firstName + ' ' + $data.lastName"></h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><span class="text-bold">Sex: </span><span data-bind="text: $data.sex"></span></li>
+            <li class="list-group-item"><span class="text-bold">Team: </span><span data-bind="text: $data.teamId"></span></li>
+            <li class="list-group-item"><span class="text-bold">Points: </span><span data-bind="text: $data.points"></span></li>
+        </ul>
+    </div>
+</li>
