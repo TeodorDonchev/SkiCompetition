@@ -9,9 +9,7 @@ class Competitor extends BaseModel {
         private _lastName: string,
         private _sex: string,
         private _teamId: number,
-        private _points: number,
-        private _time: number,
-        private _competitions: Array<number> = []) {
+        private _points: number) {
         super();
     }
 
@@ -39,14 +37,6 @@ class Competitor extends BaseModel {
         return this._points;
     }
 
-    public get time() {
-        return this._time;
-    }
-
-    public get competitions() {
-        return this._competitions;
-    }
-
     private set id(value: number) {
         this._id = value;
     }
@@ -67,19 +57,19 @@ class Competitor extends BaseModel {
         this._teamId = value;
     }
 
-    public set competitions(value: number[]) {
-        this._competitions = value;
-    }
-
-    public set time(value: number) {
-        this._time = value;
-    }
-
     public set points(value: number) {
         this._points = value;
     }
-
+    getServerData() {
+        return JSON.stringify({
+            //id: this.id,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            sex: this.sex,
+            teamId: this.teamId,
+            points: this._points
+        });
+    }
 }
 
-// The default export returns the component details object to register with KO  
 export default Competitor;

@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace SkiCompetition.Models
 {
-    public class Competition
+    public partial class Competition
     {
-        public int CompetitionID { get; set; }
-        public string Name{ get; set; }
-        public DateTime Date{ get; set; }
-        public string Location{ get; set; }
+        public Competition()
+        {
+            CompetitionCompetitorRelations = new HashSet<CompetitionCompetitorRelation>();
+        }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public DateTime Date { get; set; }
         public bool isFinished { get; set; }
-        public List<Competitor> Competitors { get; set; }
+
+        public virtual ICollection<CompetitionCompetitorRelation> CompetitionCompetitorRelations { get; set; }
     }
 }

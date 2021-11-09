@@ -4,27 +4,24 @@ import Service from "../Services/Service.js";
 import ContentVM from "./Content.js";
 
 export class CompetitorsDialogVM {
-
+    id: KnockoutObservable<number>;
     firstName: KnockoutObservable<string>;
     lastName: KnockoutObservable<string>;
     sex: KnockoutObservable<string>;
-    time: KnockoutObservable<number>;
     points: KnockoutObservable<number>;
     teamId: KnockoutObservable<number>;
-    competitions: KnockoutObservableArray<number>;
 
-    constructor(private model: Competitor, private onFinish: (competitor: Competitor) => void, private isEdit: boolean = false, private teams: Team[] = []) {
+    constructor(private onFinish: (competitor: Competitor) => void, private isEdit: boolean = false, private teams: Team[] = [], private model: Competitor = null) {
+        this.id = isEdit ? ko.observable(model.id) : ko.observable(0);
         this.firstName = isEdit ? ko.observable(model.firstName) : ko.observable();
         this.lastName = isEdit ? ko.observable(model.lastName) : ko.observable();
         this.sex = isEdit ? ko.observable(model.sex) : ko.observable();
-        this.time = isEdit ? ko.observable(model.time) : ko.observable();
         this.points = isEdit ? ko.observable(model.points) : ko.observable();
         this.teamId = isEdit ? ko.observable(model.teamId) : ko.observable();
-        this.competitions = isEdit ? ko.observableArray(model.competitions) : ko.observableArray();
     }
 
     flushResult() {
-        this.onFinish(new Competitor(-1, this.firstName(), this.lastName(), this.sex(), this.time(), this.points(), this.teamId(), this.competitions()))
+        this.onFinish(new Competitor(-1, this.firstName(), this.lastName(), this.sex(), this.teamId(), this.points()))
         //this.model.firstName = this.firstName();
         //this.model.lastName = this.lastName();
         //this.model.sex = this.sex();
@@ -63,7 +60,7 @@ export default class CompetitorVM extends ContentVM {
     }
 
     createNewCompetitor() {
-        this.activeCompetitor(new CompetitorsDialogVM(this.service.CreateNewCompetitor(), (newCompetitor: Competitor) => {
+        this.activeCompetitor(new CompetitorsDialogVM((newCompetitor: Competitor) => {
             this.service.createCompetitor(newCompetitor).then((id) => {
                 this.refreshResults();
                 this.activeCompetitor(null);
@@ -72,11 +69,11 @@ export default class CompetitorVM extends ContentVM {
     }
 
     editCompetitor(editedCompetitor: Competitor) {
-        this.activeCompetitor(new CompetitorsDialogVM(editedCompetitor, (updatedCompetitor: Competitor) => {
+        this.activeCompetitor(new CompetitorsDialogVM((updatedCompetitor: Competitor) => {
             this.service.updateCompetitor(editedCompetitor.id, editedCompetitor).then((id) => {
                 this.refreshResults();
                 this.activeCompetitor(null);
             });
-        }, true, this.teams()));
+        }, true, this.teams(), editedCompetitor));
     }
 }

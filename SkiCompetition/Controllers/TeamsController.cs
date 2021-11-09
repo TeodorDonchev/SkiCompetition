@@ -9,49 +9,49 @@ using SkiCompetition.Models;
 
 namespace SkiCompetition.Controllers
 {
-    [Route("api/competitor")]
+    [Route("api/team")]
     [ApiController]
-    public class CompetitorsController : ControllerBase
+    public class TeamsController : ControllerBase
     {
         private readonly SkiCompetitionContext _context;
 
-        public CompetitorsController(SkiCompetitionContext context)
+        public TeamsController(SkiCompetitionContext context)
         {
             _context = context;
         }
 
-        // GET: api/Competitors
+        // GET: api/Teams
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Competitor>>> GetCompetitors()
+        public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
         {
-            return await _context.Competitors.ToListAsync();
+            return await _context.Teams.ToListAsync();
         }
 
-        // GET: api/Competitors/5
+        // GET: api/Teams/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Competitor>> GetCompetitor(int id)
+        public async Task<ActionResult<Team>> GetTeam(int id)
         {
-            var competitor = await _context.Competitors.FindAsync(id);
+            var team = await _context.Teams.FindAsync(id);
 
-            if (competitor == null)
+            if (team == null)
             {
                 return NotFound();
             }
 
-            return competitor;
+            return team;
         }
 
-        // PUT: api/Competitors/5
+        // PUT: api/Teams/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCompetitor(int id, Competitor competitor)
+        public async Task<IActionResult> PutTeam(int id, Team team)
         {
-            if (id != competitor.Id)
+            if (id != team.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(competitor).State = EntityState.Modified;
+            _context.Entry(team).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace SkiCompetition.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CompetitorExists(id))
+                if (!TeamExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace SkiCompetition.Controllers
             return NoContent();
         }
 
-        // POST: api/Competitors
+        // POST: api/Teams
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Competitor>> PostCompetitor(Competitor competitor)
+        public async Task<ActionResult<Team>> PostTeam(Team team)
         {
-            _context.Competitors.Add(competitor);
+            _context.Teams.Add(team);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCompetitor", new { id = competitor.Id }, competitor);
+            return CreatedAtAction("GetTeam", new { id = team.Id }, team);
         }
 
-        // DELETE: api/Competitors/5
+        // DELETE: api/Teams/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCompetitor(int id)
+        public async Task<IActionResult> DeleteTeam(int id)
         {
-            var competitor = await _context.Competitors.FindAsync(id);
-            if (competitor == null)
+            var team = await _context.Teams.FindAsync(id);
+            if (team == null)
             {
                 return NotFound();
             }
 
-            _context.Competitors.Remove(competitor);
+            _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CompetitorExists(int id)
+        private bool TeamExists(int id)
         {
-            return _context.Competitors.Any(e => e.Id == id);
+            return _context.Teams.Any(e => e.Id == id);
         }
     }
 }

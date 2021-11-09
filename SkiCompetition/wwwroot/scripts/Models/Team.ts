@@ -1,5 +1,4 @@
-﻿import Competitor from './Competitor.js';
-import BaseModel from './BaseModel.js';
+﻿import BaseModel from './BaseModel.js';
 
 class Team extends BaseModel {
     private _id: number;
@@ -45,6 +44,13 @@ class Team extends BaseModel {
 
     public set points(value: number) {
         this._points = value;
+    }
+    getServerData() {
+        return JSON.stringify({
+            //id: this.id,
+            name: this.name,
+            points: this.points
+        });
     }
 }
 

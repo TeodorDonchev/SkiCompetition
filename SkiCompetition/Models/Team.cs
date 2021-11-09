@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace SkiCompetition.Models
 {
-    public class Team
+    public partial class Team
     {
+        public Team()
+        {
+            Competitors = new HashSet<Competitor>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Competitor> Competitors { get; set; }
         public int Points { get; set; }
+
+        public virtual ICollection<Competitor> Competitors { get; set; }
     }
 }

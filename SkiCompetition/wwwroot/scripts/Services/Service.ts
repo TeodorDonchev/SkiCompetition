@@ -17,15 +17,6 @@ import TeamCrud from "./Teams/CRUD.js";
 import CommunicationFacade from './CommunicationFacade.js';
 
 export default class Service implements ICompetitionService, ICompetitorService, ITeamService {
-    createNewTeam(): Team {
-        return new Team(-1, 'Team', 0);
-    }
-    CreateNewCompetitor(): Competitor {
-        return new Competitor(-1, 'New', 'Competitor', 'Female', -1, 0, 0);
-    }
-    createNewCompetition(): any {
-        return new Competition(-1, 'New Competition', '01.01.2022', 'Location');
-    }
     private CompetitorCRUD: ICRUD<Competitor>;
     private CompetitionCRUD: ICRUD<Competition>;
     private TeamCRUD: ICRUD<Team>;
@@ -38,17 +29,21 @@ export default class Service implements ICompetitionService, ICompetitorService,
 
     getCompetitorsInCompetition(competitorsIds: number[]): Promise<Competitor[]> {
         return new Promise((resolve, reject) => {
-            this.getAllCompetitors().then((competitors) => {
-                let competitorsInCompetition = [];
-                competitors.forEach((competitor) => {
-                    let index = competitorsIds.indexOf(competitor.id);
-                    if (index !== -1) {
-                        competitorsInCompetition.push(competitor);
-                    }
-                })
+            if (competitorsIds) {
+                this.getAllCompetitors().then((competitors) => {
+                    let competitorsInCompetition = [];
+                    competitors.forEach((competitor) => {
+                        let index = competitorsIds.indexOf(competitor.id);
+                        if (index !== -1) {
+                            competitorsInCompetition.push(competitor);
+                        }
+                    })
 
-                resolve(competitorsInCompetition);
-            })
+                    resolve(competitorsInCompetition);
+                })
+            } else {
+                reject('no competitors');
+            }
         });
     }
 

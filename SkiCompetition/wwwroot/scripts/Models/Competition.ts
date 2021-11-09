@@ -64,6 +64,16 @@ class Competition extends BaseModel {
         this._competitors.push(competitor.id);
     }
 
+    getServerData() {
+        return JSON.stringify({
+            //id: this.id,
+            name: this.name,
+            date: this.date,
+            location: this.location,
+            isFinished: this.isFinished,
+            competitors: this.competitors
+        });
+    }
 }
 
 export default Competition;

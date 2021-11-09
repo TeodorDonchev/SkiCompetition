@@ -2,4 +2,5 @@
     public save() {
         console.log('saved!');
     }
+    public abstract getServerData(): string;
 }

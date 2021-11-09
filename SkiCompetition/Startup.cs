@@ -22,8 +22,7 @@ namespace SkiCompetition
         {
             services.AddControllers();
 
-            services.AddDbContext<SkiCompetitionContext>(opt =>
-                                               opt.UseInMemoryDatabase("SkiCompetition"));
+            services.AddDbContext<SkiCompetitionContext>();
 
             //services.AddSwaggerGen(c =>
             //{
@@ -43,7 +42,7 @@ namespace SkiCompetition
 
             app.UseHttpsRedirection();
 
-            //app.UseDefaultFiles();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();

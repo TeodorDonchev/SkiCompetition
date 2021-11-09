@@ -8,7 +8,7 @@ export class TeamsDialogVM {
     competitors: KnockoutObservableArray<number>;
     points: KnockoutObservable<number>;
 
-    constructor(private model: Team, private onFinish: (team: Team) => void, private isEdit: boolean = false) {
+    constructor(private onFinish: (team: Team) => void, private model: Team = null,  private isEdit: boolean = false) {
         this.name = isEdit ? ko.observable(model.name) : ko.observable();
         this.competitors = isEdit ? ko.observableArray(model.competitors) : ko.observableArray();
         this.points = isEdit ? ko.observable(model.points) : ko.observable();
@@ -42,21 +42,20 @@ export default class TeamVM extends ContentVM {
     }
 
     createNewTeam() {
-        this.activeTeam(new TeamsDialogVM(this.service.createNewTeam(), (newTeam: Team) => {
+        this.activeTeam(new TeamsDialogVM((newTeam: Team) => {
             this.service.createTeam(newTeam).then((id) => {
-                //this.refreshResults();
-                this.teams.push(newTeam);
+                this.refreshResults();
                 this.activeTeam(null);
             });
         }));
     }
 
     editTeam(editedTeam: Team) {
-        this.activeTeam(new TeamsDialogVM(editedTeam, (updatedTeam: Team) => {
+        this.activeTeam(new TeamsDialogVM((updatedTeam: Team) => {
             this.service.updateTeam(editedTeam.id, editedTeam).then((id) => {
                 this.refreshResults();
                 this.activeTeam(null);
             });
-        }, true));
+        }, editedTeam, true));
     }
 }

@@ -1,14 +1,21 @@
-﻿export default class CommunicationFacade<T> {
+﻿import BaseModel from "../Models/BaseModel";
+
+export default class CommunicationFacade<T extends BaseModel> {
     private _url: string;
     private _query: string;
     private setURL: () => void;
+    private headers: { Accept: string; 'Content-Type': string; };
 
     constructor(private extension: string) {
-        this._url = 'https://b0400ec1-21aa-4162-b418-237f66c884c0.mock.pstmn.io/api/' + this.extension;
+        this.headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+        this._url = '/api/' + this.extension;
         this._query = '';
 
         this.setURL = function (): void {
-            this._url = this._query ? this._url + this._query : 'https://b0400ec1-21aa-4162-b418-237f66c884c0.mock.pstmn.io/api/' + this.extension;
+            this._url = this._query ? this._url + this._query : '/api/' + this.extension;
         }
     }
 
@@ -32,8 +39,12 @@
         this._query = '';
         this.setURL();
         return fetch(this._url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             method: 'POST',
-            body: JSON.stringify(element)
+            body: element.getServerData()
         }).then(data => data.json());
     }
 
@@ -41,14 +52,22 @@
         this._query = `?id=${id}`;
         this.setURL();
         return fetch(this._url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             method: 'PUT',
-            body: JSON.stringify(element)
+            body: element.getServerData()
         }).then(data => data.json());
     }
 
     deleteData(id: number): Promise<void> {
         this._query = `?id=${id}`;
         return fetch(this._url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             method: 'DELETE',
         }).then(data => data.json());
     }

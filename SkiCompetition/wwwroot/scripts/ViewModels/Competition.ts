@@ -11,11 +11,11 @@ export class CompetitionsDialogVM {
     competitors: KnockoutObservableArray<number>;
     competitorModels: KnockoutObservableArray<Competitor>;
 
-    constructor(private model: Competition, private onFinish: (competition: Competition) => void, private isEdit: boolean = false, private competitorsInCompetition: Competitor[] = []) {
-        if (isEdit) {
-            let dateArr = model.date.split('/');
-            this.model.date = dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1];
-        }
+    constructor(private onFinish: (competition: Competition) => void, private isEdit: boolean = false, private model: Competition = null, private competitorsInCompetition: Competitor[] = []) {
+        //if (isEdit) {
+        //    let dateArr = model.date.split('/');
+        //    this.model.date = dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1];
+        //}
         this.name = this.isEdit ? ko.observable(this.model.name) : ko.observable();
         this.location = this.isEdit ? ko.observable(this.model.location) : ko.observable();
         this.date = this.isEdit ? ko.observable(this.model.date) : ko.observable();
@@ -55,9 +55,9 @@ export default class CompetitionsVM extends ContentVM {
         this.refreshResults = function () {
             this.service.getAllCompetitions()
                 .then((competitions) => {
-                    //competitions = competitions.map((c) => {
-                    //    return ({ id: c.id, name: c.name, location: c.location, date: c.date.split('-').reverse().join('/'), competitors: c.competitors, isFinished: c.isFinished });
-                    //});
+                    competitions = competitions.map((c) => {
+                        return ({ id: c.id, name: c.name, location: c.location, date: c.date.split('T')[0], competitors: c.competitors, isFinished: c.isFinished });
+                    });
                     console.log(competitions);
                     this.competitions(competitions);
                 });
@@ -65,7 +65,7 @@ export default class CompetitionsVM extends ContentVM {
     }
 
     createNewCompetition() {
-        this.activeCompetition(new CompetitionsDialogVM(this.service.createNewCompetition(), (newCompetition: Competition) => {
+        this.activeCompetition(new CompetitionsDialogVM((newCompetition: Competition) => {
             this.service.createCompetition(newCompetition).then((id) => {
                 this.refreshResults();
                 this.activeCompetition(null);
@@ -76,18 +76,18 @@ export default class CompetitionsVM extends ContentVM {
     editCompetition(editedCompetition: Competition) {
         this.service.getCompetitorsInCompetition(editedCompetition.competitors)
             .then((competitorsInCompetition) => {
-                this.activeCompetition(new CompetitionsDialogVM(editedCompetition, (updatedCompetition: Competition) => {
+                this.activeCompetition(new CompetitionsDialogVM((updatedCompetition: Competition) => {
                     this.service.updateCompetition(updatedCompetition.id, updatedCompetition).then((id) => {
                         this.refreshResults();
                         this.activeCompetition(null);
 
                     });
-                }, true, competitorsInCompetition));
-            })
+                }, true, editedCompetition, competitorsInCompetition));
+            }).catch(err => { console.log(err) })
 
     }
 
     //refreshResults() {
-       
+
     //}
 }
