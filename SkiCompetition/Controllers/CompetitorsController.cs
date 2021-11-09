@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SkiCompetition.Models;
+using DAL.Models;
 
 namespace SkiCompetition.Controllers
 {
@@ -50,7 +50,6 @@ namespace SkiCompetition.Controllers
             {
                 return BadRequest();
             }
-
             _context.Entry(competitor).State = EntityState.Modified;
 
             try

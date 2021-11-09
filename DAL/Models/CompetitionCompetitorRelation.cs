@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace SkiCompetition.Models
+namespace DAL.Models
 {
     public partial class CompetitionCompetitorRelation
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SkiCompetition.Models;
+using DAL.Models;
 
 namespace SkiCompetition.Controllers
 {
@@ -22,35 +22,19 @@ namespace SkiCompetition.Controllers
 
         // GET: api/Competitions
         [HttpGet]
-        public async Task<ActionResult<Dictionary<Competition, List<int>>>> GetCompetitions()
+        public async Task<ActionResult<List<ClientModels.Competition>>> GetCompetitions()
         {
-
-            var relQuery = await _context.Competitions
-    .Join(
-        _context.CompetitionCompetitorRelations,
-        competition => competition.Id,
-        relation => relation.CompetitionId,
-        (competition, relation) => new
-        {
-            competition = competition,
-            competitorId = relation.CompetitorId
-        }
-    ).ToArrayAsync();
-
-            var bla = new Dictionary<Competition, List<int>>();
-            foreach (var rel in relQuery)
+            var competitions = await _context.Competitions
+                .Include(x => x.CompetitionCompetitorRelations)
+                .ToListAsync();
+            var clientCompetitions = new List<ClientModels.Competition>();
+            //_context.Competitors.Where(x => x.CompetitionCompetitorRelations.)
+            foreach (var item in competitions)
             {
-                if (bla[rel.competition] != null)
-                    bla[rel.competition].Add(rel.competitorId);
-                else
-                {
-                    var l = new List<int>();
-                    l.Add(rel.competitorId);
-                    bla[rel.competition] = l;
-                }
+                clientCompetitions.Add(ClientModels.Competition.Create(item));
             }
-
-            return bla;
+  
+            return clientCompetitions;
         }
 
         // GET: api/Competitions/5

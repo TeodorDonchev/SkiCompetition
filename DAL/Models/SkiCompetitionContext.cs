@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace SkiCompetition.Models
+namespace DAL.Models
 {
     public partial class SkiCompetitionContext : DbContext
     {
@@ -43,6 +43,8 @@ namespace SkiCompetition.Models
                     .HasColumnType("date")
                     .HasColumnName("date");
 
+                entity.Property(e => e.IsFinished).HasColumnName("isFinished");
+
                 entity.Property(e => e.Location)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -52,10 +54,6 @@ namespace SkiCompetition.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("name");
-
-                entity.Property(e => e.isFinished)
-                    .IsRequired()
-                    .HasColumnName("isFinished");
             });
 
             modelBuilder.Entity<CompetitionCompetitorRelation>(entity =>
@@ -99,7 +97,7 @@ namespace SkiCompetition.Models
 
                 entity.Property(e => e.Sex)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(1)
                     .HasColumnName("sex");
 
                 entity.Property(e => e.TeamId).HasColumnName("teamId");
