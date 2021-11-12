@@ -27,26 +27,7 @@ export default class Service implements ICompetitionService, ICompetitorService,
         this.TeamCRUD = new TeamCRUDLogDecorator(new TeamCRUDCacheDecorator(new TeamCrud(new CommunicationFacade<Team>('team'))), new ConsoleLogger());
     }
 
-    getCompetitorsInCompetition(competitorsIds: number[]): Promise<Competitor[]> {
-        return new Promise((resolve, reject) => {
-            if (competitorsIds) {
-                this.getAllCompetitors().then((competitors) => {
-                    let competitorsInCompetition = [];
-                    competitors.forEach((competitor) => {
-                        let index = competitorsIds.indexOf(competitor.id);
-                        if (index !== -1) {
-                            competitorsInCompetition.push(competitor);
-                        }
-                    })
-
-                    resolve(competitorsInCompetition);
-                })
-            } else {
-                reject('no competitors');
-            }
-        });
-    }
-
+    
     getSortedTeams(): Promise<Team[]> {
         return this.TeamCRUD.readAll().then((teams) => {
             return teams.sort((a, b) => b.points - a.points);
@@ -116,5 +97,4 @@ export default class Service implements ICompetitionService, ICompetitorService,
     deleteCompetition(id: number): Promise<void> {
         return this.CompetitionCRUD.delete(id);
     }
-
 }

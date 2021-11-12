@@ -33,7 +33,7 @@ namespace SkiCompetition.Controllers
             {
                 clientCompetitions.Add(ClientModels.Competition.Create(item));
             }
-  
+
             return clientCompetitions;
         }
 
@@ -54,11 +54,22 @@ namespace SkiCompetition.Controllers
         // PUT: api/Competitions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCompetition(int id, Competition competition)
+        public async Task<IActionResult> PutCompetition(int id, Competition competition, int competitorId)
         {
+            if(competitorId == 0)
+            {
+                Console.WriteLine($"in");
+
+            }
+
             if (id != competition.Id)
             {
                 return BadRequest();
+            }
+
+            foreach (var item in competition.CompetitionCompetitorRelations)
+            {
+                    _context.CompetitionCompetitorRelations.Add(item);
             }
 
             _context.Entry(competition).State = EntityState.Modified;
@@ -98,11 +109,15 @@ namespace SkiCompetition.Controllers
         public async Task<IActionResult> DeleteCompetition(int id)
         {
             var competition = await _context.Competitions.FindAsync(id);
+            var relations = await _context.CompetitionCompetitorRelations.Where(relation => relation.CompetitionId == id).ToListAsync();
             if (competition == null)
             {
                 return NotFound();
             }
-
+            foreach (var item in relations)
+            {
+                _context.CompetitionCompetitorRelations.Remove(item);
+            }
             _context.Competitions.Remove(competition);
             await _context.SaveChangesAsync();
 

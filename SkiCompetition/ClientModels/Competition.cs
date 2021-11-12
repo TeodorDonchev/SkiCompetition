@@ -15,10 +15,10 @@ namespace SkiCompetition.ClientModels
             c.Location = competition.Location;
             c.Date = competition.Date;
             c.IsFinished = competition.IsFinished;
-            c.Competitors = new List<int>();
+            c.CompetitorRelations = new List<ClientModels.CompetitionCompetitorRelation>();
             foreach (var item in competition.CompetitionCompetitorRelations)
             {
-               c.Competitors.Add(item.CompetitorId);
+               c.CompetitorRelations.Add(ClientModels.CompetitionCompetitorRelation.Create(item));
             }
             return c;
         }
@@ -28,7 +28,7 @@ namespace SkiCompetition.ClientModels
         public string Location { get; set; }
         public DateTime Date { get; set; }
         public bool IsFinished { get; set; }
-        public List<int> Competitors { get; set; }
+        public List<ClientModels.CompetitionCompetitorRelation> CompetitorRelations { get; set; }
 
     }
 }

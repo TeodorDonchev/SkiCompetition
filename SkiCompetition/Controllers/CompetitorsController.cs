@@ -22,9 +22,15 @@ namespace SkiCompetition.Controllers
 
         // GET: api/Competitors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Competitor>>> GetCompetitors()
+        public async Task<ActionResult<List<ClientModels.Competitor>>> GetCompetitors()
         {
-            return await _context.Competitors.ToListAsync();
+            var competitors = await _context.Competitors.ToListAsync();
+            var clientCompetitors = new List<ClientModels.Competitor>();
+            foreach (var item in competitors)
+            {
+                clientCompetitors.Add(ClientModels.Competitor.Create(item));
+            }
+            return clientCompetitors;
         }
 
         // GET: api/Competitors/5

@@ -15,13 +15,14 @@ export default class CommunicationFacade<T extends BaseModel> {
         this._query = '';
 
         this.setURL = function (): void {
-            this._url = this._query ? this._url + this._query : '/api/' + this.extension;
+            if (this._url.split('/')[this._url.lenght - 1] !== this.query) {
+                this._url = this._query ? this._url + this._query : '/api/' + this.extension;
+            }
         }
     }
 
     getAllData(): Promise<Array<T>> {
-        this._query = '';
-        this.setURL();
+        this._url = '/api/' + this.extension;
         return fetch(this._url)
             .then((data) => {
                 return data.json();
@@ -29,15 +30,13 @@ export default class CommunicationFacade<T extends BaseModel> {
     }
 
     getDataByID(id: number): Promise<T> {
-        this._query = `?id=${id}`;
-        this.setURL();
+        this._url = '/api/' + this.extension + `/${id}`;
         return fetch(this._url)
             .then(data => data.json());
     }
 
     postData(element: T): Promise<T> {
-        this._query = '';
-        this.setURL();
+        this._url = '/api/' + this.extension;
         return fetch(this._url, {
             headers: {
                 'Accept': 'application/json',
@@ -49,8 +48,7 @@ export default class CommunicationFacade<T extends BaseModel> {
     }
 
     updateData(id: number, element: T): Promise<void> {
-        this._query = `?id=${id}`;
-        this.setURL();
+        this._url = '/api/' + this.extension + `/${id}`;
         return fetch(this._url, {
             headers: {
                 'Accept': 'application/json',
@@ -58,17 +56,13 @@ export default class CommunicationFacade<T extends BaseModel> {
             },
             method: 'PUT',
             body: element.getServerData()
-        }).then(data => data.json());
+        }).then(data => { });
     }
 
     deleteData(id: number): Promise<void> {
-        this._query = `?id=${id}`;
+        this._url = '/api/' + this.extension + `/${id}`
         return fetch(this._url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
             method: 'DELETE',
-        }).then(data => data.json());
+        }).then(data => { });
     }
 }

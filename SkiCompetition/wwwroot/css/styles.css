@@ -143,3 +143,43 @@ body {
     position: sticky;
     top: 0;
 }
+
+.custom.form-group {
+    display: flex;
+    margin-bottom: 10px;
+    /*justify-content: s*/
+}
+
+.competitor {
+    /*margin-left: 42%;*/
+    border: 1.5px solid #5890FF;
+    font-size: 15px;
+    color: black;
+    line-height: 15px;
+    height: 35px;
+    margin-left: 10px;
+    width: 20%;
+    background-color: white;
+}
+
+.select-competitor.custom-select.form-control {
+    /*margin-top: 20px;*/
+    display: inline-block;
+    width: 70% !important;
+    height: 35px;
+}
+
+/*.bi.bi-x-lg path {
+    fill: grey !important;
+}
+
+    .bi.bi-x-lg path:hover {
+        fill: black !important;
+        cursor: pointer;
+    }*/
+
+.delete-competitor {
+    height: 6px !important;
+    width: 6px !important;
+}
+

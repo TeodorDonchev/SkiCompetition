@@ -36,7 +36,7 @@ export class CompetitorsDialogVM {
 
 
 export default class CompetitorVM extends ContentVM {
-    competitors: KnockoutObservableArray<Competitor>;
+    competitors: KnockoutObservableArray<{ competitor: Competitor, teamName: string }>;
     teams: KnockoutObservableArray<Team>;
     activeCompetitor: KnockoutObservable<CompetitorsDialogVM>;
     selectedCompetitor: KnockoutObservable<Competitor>;
@@ -47,15 +47,15 @@ export default class CompetitorVM extends ContentVM {
         this.activeCompetitor = ko.observable(null);
         this.selectedCompetitor = ko.observable();
 
-
         this.refreshResults = function () {
             this.service.getAllCompetitors()
                 .then((competitors) => {
-                    this.competitors(competitors);
+                    competitors.forEach((competitor) => {
+                        this.service.readTeam(competitor.teamId).then((team) => {
+                            this.competitors.push({ competitor, teamName: team.name });
+                        })
+                    })
                 });
-            this.service.getAllTeams().then((teams) => {
-                this.teams = ko.observableArray(teams);
-            });
         };
     }
 
