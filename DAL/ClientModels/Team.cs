@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SkiCompetition.ClientModels
+namespace DAL.ClientModels
 {
     public class Team
     {

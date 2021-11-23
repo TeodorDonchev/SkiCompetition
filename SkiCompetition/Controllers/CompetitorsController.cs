@@ -22,20 +22,20 @@ namespace SkiCompetition.Controllers
 
         // GET: api/Competitors
         [HttpGet]
-        public async Task<ActionResult<List<ClientModels.Competitor>>> GetCompetitors()
+        public async Task<ActionResult<List<DAL.ClientModels.Competitor>>> GetCompetitors()
         {
             var competitors = await _context.Competitors.ToListAsync();
-            var clientCompetitors = new List<ClientModels.Competitor>();
+            var clientCompetitors = new List<DAL.ClientModels.Competitor>();
             foreach (var item in competitors)
             {
-                clientCompetitors.Add(ClientModels.Competitor.Create(item));
+                clientCompetitors.Add(DAL.ClientModels.Competitor.Create(item));
             }
             return clientCompetitors;
         }
 
         // GET: api/Competitors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Competitor>> GetCompetitor(int id)
+        public async Task<ActionResult<DAL.ClientModels.Competitor>> GetCompetitor(int id)
         {
             var competitor = await _context.Competitors.FindAsync(id);
 
@@ -44,7 +44,7 @@ namespace SkiCompetition.Controllers
                 return NotFound();
             }
 
-            return competitor;
+            return DAL.ClientModels.Competitor.Create(competitor);
         }
 
         // PUT: api/Competitors/5
@@ -80,9 +80,9 @@ namespace SkiCompetition.Controllers
         // POST: api/Competitors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Competitor>> PostCompetitor(Competitor competitor)
+        public async Task<ActionResult<Competitor>> PostCompetitor(DAL.ClientModels.Competitor competitor)
         {
-            _context.Competitors.Add(competitor);
+            _context.Competitors.Add(DAL.Models.Competitor.Create(competitor));
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCompetitor", new { id = competitor.Id }, competitor);
@@ -96,6 +96,11 @@ namespace SkiCompetition.Controllers
             if (competitor == null)
             {
                 return NotFound();
+            }
+            var relations = await _context.CompetitionCompetitorRelations.Where(relation => relation.CompetitorId == id).ToListAsync();
+            if (relations != null)
+            {
+                _context.CompetitionCompetitorRelations.RemoveRange(relations);
             }
 
             _context.Competitors.Remove(competitor);

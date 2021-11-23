@@ -19,7 +19,7 @@
                 <div class="modal-content">
                     <!--ko with: activeCompetitor()-->
                     <div class="modal-header">
-                        <h5 class="modal-title" data-bind="text: isEdit?'Edit Competitor':'Add Competitor'" id="staticBackdropLabel"></h5>
+                        <h5 class="modal-title" data-bind="text: isCreate()?'Edit Competitor':'Add Competitor'" id="staticBackdropLabel"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -58,6 +58,6 @@
             </div>
         </div>
 
-        <ul class="custom card-list" data-bind="template:{name:'Competitor-Card', foreach: competitors}"> </ul>
+        <ul data-bind="template:{name:'Card', data:{innerTemplate: 'Competitor-Card-Content', data: competitors}}"> </ul>
     </div>
 </div>

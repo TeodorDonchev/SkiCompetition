@@ -11,15 +11,15 @@ export default class TeamRanksVM extends ContentVM {
         super(service);
         this.selectedTeam = ko.observable();
         this.teams = ko.observableArray([]);
-
-        this.refreshResults = function () {
-            this.service.getAllTeams()
-                .then((teams) => {
-                    this.teams(teams);
-                });
-        }
         this.sortedTeams = ko.computed(() => {
             return this.teams().sort((a, b) => b.points - a.points);
         });
+    }
+
+    refreshResults() {
+        this.service.getAllTeams()
+            .then((teams) => {
+                this.teams(teams);
+            });
     }
 }

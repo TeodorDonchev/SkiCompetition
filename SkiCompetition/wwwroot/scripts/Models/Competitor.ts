@@ -62,7 +62,7 @@ class Competitor extends BaseModel {
     }
     getServerData() {
         return JSON.stringify({
-            //id: this.id,
+            id: this.id,
             firstName: this.firstName,
             lastName: this.lastName,
             sex: this.sex,

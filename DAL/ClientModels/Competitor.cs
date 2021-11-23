@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SkiCompetition.ClientModels
+namespace DAL.ClientModels
 {
     public class Competitor
     {
-        public static Competitor Create(DAL.Models.Competitor competitor)
+        public static Competitor Create(Models.Competitor competitor)
         {
             var c = new Competitor
             {

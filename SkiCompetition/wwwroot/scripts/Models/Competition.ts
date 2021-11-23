@@ -4,12 +4,12 @@ import BaseModel from './BaseModel.js';
 class Competition extends BaseModel {
     private _id: number;
     private _name: string;
-    private _date: string;
+    private _date: Date;
     private _location: string;
     private _isFinished: boolean;
-    private _competitorRelations: Array<{competitionId: number, competitorId: number}>;
+    private _competitorRelations: Array<{ competitorId: number, time: number, points: number, place: number}>;
 
-    constructor(id: number, name: string, date: string, location: string, competitorRelations: Array<{ competitionId: number, competitorId: number }> = [], isFinished: boolean = false) {
+    constructor(id: number, name: string, date: Date, location: string, competitorRelations: Array<{ competitorId: number, time: number, points: number, place: number }> = [], isFinished: boolean = false) {
         super();
         this.id = id;
         this.name = name;
@@ -52,7 +52,7 @@ class Competition extends BaseModel {
         this._name = value;
     }
 
-    public set date(value: string) {
+    public set date(value: Date) {
         this._date = value;
     }
 
@@ -60,8 +60,8 @@ class Competition extends BaseModel {
         this._location = value;
     }
 
-    public addCompetitor(competitorRelation: { competitionId: number, competitorId: number }) {
-        this._competitorRelations.push(competitorRelation);
+    public set isFinished(value: boolean) {
+        this._isFinished = value;
     }
 
     getServerData() {
@@ -71,7 +71,7 @@ class Competition extends BaseModel {
             date: this.date,
             location: this.location,
             isFinished: this.isFinished,
-            competitionCompetitorRelations: this.competitorRelations
+            competitorRelations: this.competitorRelations
         });
     }
 }

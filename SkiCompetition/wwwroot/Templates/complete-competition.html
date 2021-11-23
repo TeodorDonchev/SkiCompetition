@@ -1,0 +1,9 @@
+﻿<label class="col-form-label">Competitors:</label>
+<ul class="list-group" data-bind="visible: competitors().length > 0, foreach: competitors()">
+    <li class="list-group-item"><span data-bind="text: $data.competitor.firstName + ' ' + $data.competitor.lastName"></span> <input data-bind="value: $data.time" type="number" name="name" value="" min="0" /> </li>
+
+</ul>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
+</div> 

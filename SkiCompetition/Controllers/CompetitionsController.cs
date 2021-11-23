@@ -22,16 +22,16 @@ namespace SkiCompetition.Controllers
 
         // GET: api/Competitions
         [HttpGet]
-        public async Task<ActionResult<List<ClientModels.Competition>>> GetCompetitions()
+        public async Task<ActionResult<List<DAL.ClientModels.Competition>>> GetCompetitions()
         {
             var competitions = await _context.Competitions
                 .Include(x => x.CompetitionCompetitorRelations)
                 .ToListAsync();
-            var clientCompetitions = new List<ClientModels.Competition>();
+            var clientCompetitions = new List<DAL.ClientModels.Competition>();
             //_context.Competitors.Where(x => x.CompetitionCompetitorRelations.)
             foreach (var item in competitions)
             {
-                clientCompetitions.Add(ClientModels.Competition.Create(item));
+                clientCompetitions.Add(DAL.ClientModels.Competition.Create(item));
             }
 
             return clientCompetitions;
@@ -54,25 +54,49 @@ namespace SkiCompetition.Controllers
         // PUT: api/Competitions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCompetition(int id, Competition competition, int competitorId)
+        public async Task<IActionResult> PutCompetition(int id, DAL.ClientModels.Competition competition)
         {
-            if(competitorId == 0)
-            {
-                Console.WriteLine($"in");
-
-            }
-
             if (id != competition.Id)
             {
                 return BadRequest();
             }
 
-            foreach (var item in competition.CompetitionCompetitorRelations)
+            var relations = _context.CompetitionCompetitorRelations.Where(x => x.CompetitionId == id);
+            if (relations != null)
             {
-                    _context.CompetitionCompetitorRelations.Add(item);
+                _context.CompetitionCompetitorRelations.RemoveRange(relations);
+            }
+            if (competition.IsFinished)
+            {
+                var didNotStart = competition.CompetitorRelations.Select(c => c.Time == 0);
+                competition.CompetitorRelations.RemoveAll(c => c.Time == 0);
+                competition.CompetitorRelations.OrderBy(c => c.Time);
+                var points = 100;
+                for (int i = 0; i < competition.CompetitorRelations.Count; i++)
+                {
+                    competition.CompetitorRelations[i].Place = i + 1;
+                    competition.CompetitorRelations[i].Points = points;
+                    _context.Competitors.Find(competition.CompetitorRelations[i].CompetitorId).Points += points;
+                    if (points > 0)
+                    {
+                        points -= 10;
+                    }
+                }
             }
 
-            _context.Entry(competition).State = EntityState.Modified;
+            foreach (var item in competition.CompetitorRelations)
+            {
+                _context.CompetitionCompetitorRelations.Add(new CompetitionCompetitorRelation
+                {
+                    CompetitionId = id,
+                    CompetitorId = item.CompetitorId,
+                    Time = item.Time,
+                    Place = item.Place,
+                    Points = item.Points
+                });
+            }
+
+            _context.Entry(DAL.Models.Competition.Create(competition)).State = EntityState.Modified;
 
             try
             {
@@ -96,9 +120,9 @@ namespace SkiCompetition.Controllers
         // POST: api/Competitions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Competition>> PostCompetition(Competition competition)
+        public async Task<ActionResult<Competition>> PostCompetition(DAL.ClientModels.Competition competition)
         {
-            _context.Competitions.Add(competition);
+            _context.Competitions.Add(DAL.Models.Competition.Create(competition));
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCompetition", new { id = competition.Id }, competition);
@@ -109,14 +133,17 @@ namespace SkiCompetition.Controllers
         public async Task<IActionResult> DeleteCompetition(int id)
         {
             var competition = await _context.Competitions.FindAsync(id);
-            var relations = await _context.CompetitionCompetitorRelations.Where(relation => relation.CompetitionId == id).ToListAsync();
             if (competition == null)
             {
                 return NotFound();
             }
-            foreach (var item in relations)
+            var relations = await _context.CompetitionCompetitorRelations.Where(relation => relation.CompetitionId == id).ToListAsync();
+            if (relations != null)
             {
-                _context.CompetitionCompetitorRelations.Remove(item);
+                foreach (var item in relations)
+                {
+                    _context.CompetitionCompetitorRelations.Remove(item);
+                }
             }
             _context.Competitions.Remove(competition);
             await _context.SaveChangesAsync();

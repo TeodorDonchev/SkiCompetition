@@ -20,12 +20,12 @@ export default class PersonalRanksVM extends ContentVM {
                 return (competitor.sex === 'Female' && this.filterBy() === 0) || (competitor.sex === 'Male' && this.filterBy() === 1);
             }).sort((a, b) => b.points - a.points);
         });
+    }
 
-        this.refreshResults = function () {
-            this.service.getAllCompetitors()
-                .then((competitors) => {
-                    this.competitors(competitors);
-                });
-        }
+    refreshResults() {
+        this.service.getAllCompetitors()
+            .then((competitors) => {
+                this.competitors(competitors);
+            });
     }
 }
