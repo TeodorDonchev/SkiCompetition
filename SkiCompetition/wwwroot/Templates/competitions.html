@@ -1,4 +1,4 @@
-﻿<div data-bind="visible: !isLoading()" class="d-flex justify-content-around">
+﻿<div class="d-flex justify-content-around">
     <div class="container-fluid">
         <div class="custom controllers d-flex justify-content-around">
             <div class="filters d-flex justify-content-between">
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div data-bind="template:{name:'Card', data: {innerTemplate: 'Competition-Card-Content', data: $data.filteredCompetitions } }">
+        <div data-bind="template:{name:'Card', data: {innerTemplate: 'Competition-Card-Content', data: $data.filteredCompetitions } }, visible: !isLoading()">
         </div>
 
 

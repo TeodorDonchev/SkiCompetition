@@ -9,4 +9,4 @@ window.startUp = () => {
     includeHtml().then(() => ko.applyBindings(new MotherShipVM(), document.body));
 };
 
-window.isLoading = ko.observable(false);
+window.isLoading = ko.observable(true);

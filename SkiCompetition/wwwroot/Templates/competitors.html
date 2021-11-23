@@ -58,6 +58,6 @@
             </div>
         </div>
 
-        <ul data-bind="template:{name:'Card', data:{innerTemplate: 'Competitor-Card-Content', data: competitors}}"> </ul>
+        <ul data-bind="template:{name:'Card', data:{innerTemplate: 'Competitor-Card-Content', data: competitors}}, visible: !isLoading()"> </ul>
     </div>
 </div>

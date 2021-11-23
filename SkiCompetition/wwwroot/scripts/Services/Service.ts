@@ -56,7 +56,9 @@ export default class Service implements ICompetitionService, ICompetitorService,
         return this.TeamCRUD.delete(id);
     }
     getAllCompetitors(): Promise<Competitor[]> {
+        window.isLoading(true);
         return this.CompetitorCRUD.readAll().then((competitors) => {
+            window.isLoading(false);
             return competitors;
         })
     }
