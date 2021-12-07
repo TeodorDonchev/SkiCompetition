@@ -113,6 +113,15 @@ export default class TeamVM extends ContentVM {
         })
     }
 
+    deleteTeam(teamId: number) {
+        if (!teamId) {
+            return;
+        }
+        this.service.deleteTeam(teamId).then(() => {
+            this.refreshResults();
+        });
+    }
+
     refreshResults() {
         this.service.getAllTeams()
             .then((teams) => {
