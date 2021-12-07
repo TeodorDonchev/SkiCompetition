@@ -1,19 +1,18 @@
 ﻿<div class="d-flex justify-content-center">
     <div class="container-fluid">
         <div class="custom controllers d-flex justify-content-center">
-            <div class="buttons">
-                <div class="search">
-                    <div class="custom input-group rounded">
-                        <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                        <button type="button" class="btn bg-color-db shadow-none">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </div>
+            
+        </div>
+        <div class="top3">
+            <div class="medal-container">
+                <img class="medal-img" src="https://cdn-icons-png.flaticon.com/512/179/179249.png" alt="First Place" data-bind="visible: top3Teams().length > 0" />
+                <img class="medal-img" src="https://cdn-icons-png.flaticon.com/512/179/179251.png" alt="Second Place" data-bind="visible: top3Teams().length > 1" />
+                <img class="medal-img" src="https://cdn-icons-png.flaticon.com/512/179/179250.png" alt="Third Place" data-bind="visible: top3Teams().length > 2" />
+            </div>
+            <div class="top3-cards" data-bind="template:{name:'Card', data: {innerTemplate: 'Team-Ranks-Card-Content', data: $data.top3Teams } }">
             </div>
         </div>
-
-        <ul class="custom card-list" data-bind="template:{name:'Team-Card', foreach: sortedTeams}">
-        </ul>
+        <div data-bind="template:{name:'Card', data:{innerTemplate: 'Team-Ranks-Card-Content', data: sortedTeams}}">
+        </div>
     </div>
 </div>

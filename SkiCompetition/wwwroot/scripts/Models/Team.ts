@@ -47,9 +47,10 @@ class Team extends BaseModel {
     }
     getServerData() {
         return JSON.stringify({
-            //id: this.id,
+            id: this.id,
             name: this.name,
-            points: this.points
+            points: this.points,
+            competitors: this.competitors
         });
     }
 }

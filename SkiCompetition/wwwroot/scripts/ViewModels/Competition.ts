@@ -8,15 +8,32 @@ const defaultCompetition = new Competition(0, '', new Date(Date.now()), '', [])
 
 
 export class CompleteCompetitionDialogVM implements IDialog {
-    competitors: KnockoutObservableArray<{ competitor: Competitor, time: number }>;
+    competitors: KnockoutObservableArray<{ competitor: Competitor, time: number, didNotStart: KnockoutObservable<boolean>}>;
     status: KnockoutObservable<string>;
 
-    constructor(private onFinish: (competition) => void, competitors: Array<{ competitor: Competitor, time: number }>, status: string) {
+    constructor(private onFinish: (results) => void, competitors: Array<{ competitor: Competitor, time: number, didNotStart: KnockoutObservable<boolean>}>, status: string) {
         this.competitors = ko.observableArray(competitors);
         this.status = ko.observable(status);
     }
+
+    isFinished() {
+        return false;
+    }
+
+    changeStatus(item: { competitor: Competitor, time: number, didNotStart: KnockoutObservable<boolean> }) {
+        item.didNotStart(!item.didNotStart());
+        if (item.didNotStart()) {
+            item.time = 0;
+        }
+    }
+
     flushResult(): void {
-        
+        let results = [];
+        this.competitors().forEach((result) => {
+            result.time = !result.didNotStart() ? 0: Number(result.time);
+            results.push({ competitorId: result.competitor.id, time: result.time, points: 0, place: 0 })
+        })
+        this.onFinish(results);
     }
 }
 
@@ -27,6 +44,7 @@ export class CompetitionsDialogVM implements IDialog {
     date: KnockoutObservable<Date>;
     isFinished: KnockoutObservable<boolean>;
     competitorRelations: KnockoutObservableArray<{ competitorId: number, time: number, points: number, place: number }>;
+    results: KnockoutObservableArray<{ competitor: Competitor, team: string, time: number, points: number, place: number }>;
     competitorsInCompetition: KnockoutObservableArray<Competitor>;
     competitorsOutOfCompetition: KnockoutObservableArray<Competitor>;
     addedCompetitorId: KnockoutObservable<number>;
@@ -44,7 +62,9 @@ export class CompetitionsDialogVM implements IDialog {
         this.competitorsOutOfCompetition = ko.observableArray();
         this.addedCompetitorId = ko.observable();
         this.status = ko.observable(status);
+        this.results = ko.observableArray();
         this.refresh();
+        
     }
 
     isCreate() {
@@ -55,8 +75,14 @@ export class CompetitionsDialogVM implements IDialog {
         this.service.getAllCompetitors().then((competitors) => {
             competitors.forEach((competitor) => {
                 let index = this.competitorRelations().findIndex((c) => c.competitorId === competitor.id);
+                let result = this.competitorRelations().find((r) => r.competitorId === competitor.id);
                 if (index !== -1) {
                     this.competitorsInCompetition.push(competitor);
+                    this.service.readTeam(competitor.teamId).then((team) => {
+
+                        this.results.push({ competitor: competitor, team: team.name, time: result.time, points: result.points, place: result.place });
+                        this.results.sort((a, b) => b.points - a.points);
+                    })
                 } else {
                     this.competitorsOutOfCompetition.push(competitor);
                 }
@@ -70,17 +96,22 @@ export class CompetitionsDialogVM implements IDialog {
         }
         this.competitorRelations.push({ competitorId: this.addedCompetitorId(), time: 0, points: 0, place: 0 });
         this.service.readCompetitor(this.addedCompetitorId()).then((competitor) => {
-            this.competitorsInCompetition.push(competitor);
-            let found = this.competitorsOutOfCompetition().find((c) => c.id === competitor.id);
-            this.competitorsOutOfCompetition.remove(found);
+            this.service.readTeam(competitor.teamId).then((team) => {
+                this.competitorsInCompetition.push(competitor);
+                let found = this.competitorsOutOfCompetition().find((c) => c.id === competitor.id);
+                this.competitorsOutOfCompetition.remove(found);
+                this.results.push({ competitor: competitor, team: team.name, time: 0, points: 0, place: 0 })
+
+            });
         });
     }
 
-    removeCompetitor(competitor: Competitor) {
-        let found = this.competitorRelations().find((r) => r.competitorId == competitor.id);
+    removeCompetitor(result: { competitor: Competitor, team: string, time: number, points: number, place: number }) {
+        let found = this.competitorRelations().find((r) => r.competitorId == result.competitor.id);
         this.competitorRelations.remove(found);
-        this.competitorsOutOfCompetition.push(competitor);
-        this.competitorsInCompetition.remove(competitor);
+        this.competitorsOutOfCompetition.push(result.competitor);
+        this.competitorsInCompetition.remove(result.competitor);
+        this.results.remove(result)
     }
 
     flushResult() {
@@ -132,13 +163,13 @@ export default class CompetitionsVM extends ContentVM {
 
     }
 
-    getCompetitorsInCompetition(competition: Competition): Promise<{ competitor: Competitor, time: number }[]> {
+    getCompetitorsInCompetition(competition: Competition): Promise<{ competitor: Competitor, time: number, didNotStart: KnockoutObservable<boolean> }[]> {
         return new Promise((resolve, reject) => {
             let results = [];
             this.service.getAllCompetitors().then((competitors) => {
                 competition.competitorRelations.forEach((relation) => {
                     let competitor = competitors.find(c => c.id === relation.competitorId);
-                    results.push({ competitor: competitor, time: 0 });
+                    results.push({ competitor: competitor, time: 0, didNotStart: ko.observable(false)});
                 })
                 resolve(results);
             });
@@ -146,17 +177,17 @@ export default class CompetitionsVM extends ContentVM {
     }
 
     completeCompetition(competition: Competition) {
-        competition.isFinished = true;
         this.getCompetitorsInCompetition(competition).then((results) => {
-
-            this.activeCompetition(new CompleteCompetitionDialogVM((updatedCompetition: Competition) => {
-                this.service.updateCompetition(updatedCompetition.id, updatedCompetition).then((id) => {
-                    this.refreshResults();
-                    this.activeCompetition(null);
-                });
-            }, results, 'Complete'))
-
-        })
+            this.activeCompetition(new CompleteCompetitionDialogVM(
+                (results: Array<{ competitorId: number, time: number, points: number, place: number }>) => {
+                    competition.isFinished = true;
+                    competition.competitorRelations = results;
+                    this.service.updateCompetition(competition.id, competition).then((id) => {
+                        this.refreshResults();
+                        this.activeCompetition(null);
+                    });
+                }, results, 'Complete'));
+        });
     }
 
     deleteCompetition(id: number) {

@@ -1,6 +1,6 @@
 ﻿<div class="form-group">
     <label for="recipient-name" class="col-form-label">Name:</label>
-    <input type="text" class="form-control" data-bind="value: name" placeholder="Enter name...">
+    <input  type="text" class="form-control" data-bind="value: name" placeholder="Enter name...">
 </div>
 <div class="form-group">
     <label for="message-text" class="col-form-label">Location:</label>
@@ -16,8 +16,8 @@
     </select>
     <button class="competitor btn btn-primary" data-bind="click:()=>  addCompetitorToCompetition()">Add</button>
 </div>
-<ul class="list-group" data-bind="visible: competitorsInCompetition().length > 0, foreach: competitorsInCompetition()">
-    <li class="list-group-item"><span data-bind="text: $data.firstName + ' ' + $data.lastName"></span> <button type="button" data-bind="click: ()=> $parent.removeCompetitor($data)" class="delete-competitor btn-close btn-xs" aria-label="Close"></button></li>
+<ul class="list-group" data-bind="visible: competitorsInCompetition().length > 0, foreach: results()">
+    <li class="list-group-item"><span data-bind="text: $data.competitor.firstName + ' ' + $data.competitor.lastName"></span> <button type="button" data-bind="click: ()=> $parent.removeCompetitor($data)" class="delete-competitor btn-close btn-xs" aria-label="Close"></button></li>
 
 </ul>
 <div class="modal-footer">

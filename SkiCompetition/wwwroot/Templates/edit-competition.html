@@ -1,17 +1,17 @@
 ﻿<div class="form-group">
     <label for="recipient-name" class="col-form-label">Name:</label>
-    <input type="text" class="form-control" data-bind="value: name" placeholder="Enter name...">
+    <input type="text" class="form-control" data-bind="value: name, disable: isFinished()" placeholder="Enter name...">
 </div>
 <div class="form-group">
     <label for="message-text" class="col-form-label">Location:</label>
-    <input type="text" class="form-control" data-bind="value: location" placeholder="Enter location...">
+    <input type="text" class="form-control" data-bind="value: location, disable: isFinished()" placeholder="Enter location...">
 </div>
 <div class="form-group">
     <label for="message-text" class="col-form-label">Start Date:</label>
-    <input type="date" class="form-control" data-bind="datePicker: date">
+    <input type="date" class="form-control" data-bind="datePicker: date, disable: isFinished()">
 </div>
-<label class="col-form-label">Competitors:</label>
-<div class="custom form-group" data-bind="visible: competitorsOutOfCompetition().length > 0">
+<label class="col-form-label" data-bind="text: isFinished() ? 'Results:' : 'Competitors:'"></label>
+<div class="custom form-group" data-bind="visible: competitorsOutOfCompetition().length > 0 && !isFinished()">
     <select class="select-competitor custom-select form-control" id="competitor-id" data-bind="options: competitorsOutOfCompetition,  optionsText: (competitor) => competitor.firstName + ' ' + competitor.lastName, optionsValue: 'id', value: addedCompetitorId">
     </select>
     <button class="competitor btn btn-primary" data-bind="click:()=>  addCompetitorToCompetition()">Add</button>
@@ -20,22 +20,24 @@
     <table class="table">
         <thead class="custom table-light">
             <tr>
-                <th scope="col">Place</th>
+                <th data-bind="visible: isFinished()" scope="col">Place</th>
                 <th scope="col">First name</th>
                 <th scope="col">Last name</th>
                 <th scope="col">Team</th>
-                <th scope="col">Points</th>
-                <th scope="col"></th>
+                <th data-bind="visible: isFinished()" scope="col">Time</th>
+                <th data-bind="visible: isFinished()" scope="col">Points</th>
+                <th data-bind="visible: !isFinished()" scope="col"></th>
             </tr>
         </thead>
-        <tbody data-bind="foreach: competitorsInCompetition()">
+        <tbody data-bind="foreach: results()">
             <tr>
-                <td data-bind="text: $index"></td>
-                <td data-bind="text: $data.firstName"></td>
-                <td data-bind="text: $data.lastName"></td>
-                <td data-bind="text: $data.teamId"></td>
-                <td data-bind="text: $data.points"></td>
-                <td>
+                <td data-bind="text: $data.time === 0 ? 'X' : $data.place, visible: $parent.isFinished()"></td>
+                <td data-bind="text: $data.competitor.firstName"></td>
+                <td data-bind="text: $data.competitor.lastName"></td>
+                <td data-bind="text: $data.team"></td>
+                <td data-bind="text: $data.time === 0 ? 'X' : $data.time, visible: $parent.isFinished()"></td>
+                <td data-bind="text: $data.points, visible: $parent.isFinished()"></td>
+                <td data-bind="visible: !$parent.isFinished()">
                     <button type="button" data-bind="click: ()=> $parent.removeCompetitor($data)" class="delete-competitor btn-close btn-xs" aria-label="Close"></button>
                 </td>
             </tr>
@@ -44,5 +46,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-primary" data-bind="click:()=> flushResult(), visible: !isFinished()" data-bs-dismiss="modal">Save</button>
 </div>

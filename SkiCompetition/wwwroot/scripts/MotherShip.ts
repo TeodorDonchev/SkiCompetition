@@ -12,9 +12,12 @@ export default class MotherShipVM {
     Service: Service;
     ActiveDeck: KnockoutObservable<Deck>;
     Decks: Array<Deck>;
+    loading: KnockoutObservable<boolean>;
 
     constructor() {
-        this.Service = new Service();
+        this.loading = ko.observable(true);
+
+        this.Service = new Service(this.loading);
 
         this.Decks = [
             new CompetitionDeck(this.Service),

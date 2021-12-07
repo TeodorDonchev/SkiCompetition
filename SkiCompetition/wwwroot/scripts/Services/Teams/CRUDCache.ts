@@ -32,38 +32,31 @@ export default class TeamCRUDCacheDecorator implements ICRUD<Team>{
     }
     update(id: number, element: Team): Promise<void> {
         return new Promise((resolve, reject) => {
-            let found = this.teamCache.find((team) => team.id === id);
-
             this.decoratedObject.update(id, element)
                 .then(() => {
-                    if (found) {
-                        let index = this.teamCache.indexOf(found);
-                        this.teamCache[index] = element;
-                    } else {
-                        this.teamCache.push(element);
-                    }
+                    this.teamCache = [];
                     resolve();
                 }, reject);
         });
     }
     delete(id: number): Promise<void> {
         return new Promise((resolve, reject) => {
-            let found = this.teamCache.find((team) => team.id === id);
-
             this.decoratedObject.delete(id)
                 .then(() => {
-                    if (found) {
-                        let index = this.teamCache.indexOf(found);
-                        this.teamCache.splice(index, 1);
-                    }
+                    this.teamCache = [];
                     resolve();
                 }, reject);
         });
     }
     readAll(): Promise<Team[]> {
         return new Promise((resolve, reject) => {
+            if (this.teamCache.length > 0) {
+                resolve(this.teamCache);
+            }
+
             this.decoratedObject.readAll()
                 .then((teams) => {
+                    this.teamCache = teams;
                     resolve(teams);
                 }, reject);
         });

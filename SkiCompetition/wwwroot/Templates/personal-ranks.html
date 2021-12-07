@@ -5,20 +5,19 @@
                 <button type="button" data-bind="click: ()=> filterBy(0), css:{'active': filterBy()===0}" class="custom btn rounded-pill shadow-none">FEMALE</button>
                 <button type="button" data-bind="click: ()=> filterBy(1), css:{'active': filterBy()===1}" class="custom btn rounded-pill shadow-none">MALE</button>
             </div>
-            <div class="buttons">
-                <div class="search">
-                    <div class="custom input-group rounded">
-                        <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                        <button type="button" class="btn bg-color-db shadow-none">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </div>
+           
+        </div>
+        <div class="top3">
+            <div class="medal-container">
+            <img class="medal-img" src="https://cdn-icons-png.flaticon.com/512/179/179249.png" alt="First Place" data-bind="visible: top3Competitors().length > 0" />
+            <img class="medal-img" src="https://cdn-icons-png.flaticon.com/512/179/179251.png" alt="Second Place" data-bind="visible: top3Competitors().length > 1"/>
+            <img class="medal-img" src="https://cdn-icons-png.flaticon.com/512/179/179250.png" alt="Third Place" data-bind="visible: top3Competitors().length > 2" />
+            </div>
+            <div class="top3-cards" data-bind="template:{name:'Card', data: {innerTemplate: 'Personal-Ranks-Card-Content', data: $data.top3Competitors } }">
             </div>
         </div>
-
-        <ul class="custom card-list" data-bind="template:{name:'Personal Ranks-Card', foreach: sortedCompetitors}">
-        </ul>
+        <div data-bind="template:{name:'Card', data: {innerTemplate: 'Personal-Ranks-Card-Content', data: $data.sortedCompetitors } }">
+        </div>
 
     </div>
 </div>

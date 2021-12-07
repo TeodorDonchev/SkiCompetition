@@ -10,6 +10,7 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
         return new Promise((resolve, reject) => {
             this.decoratedObject.create(element)
                 .then((id) => {
+                    element.id = id;
                     this.competitionCache.push(element);
                     resolve(id);
                 }, reject);
@@ -32,15 +33,8 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
     }
     update(id: number, element: Competition): Promise<void> {
         return new Promise((resolve, reject) => {
-            let found = this.competitionCache.find((cc) => cc.id === id);
-
             this.decoratedObject.update(id, element).then(() => {
-                if (found) {
-                    let index = this.competitionCache.indexOf(found);
-                    this.competitionCache[index] = element;
-                } else {
-                    this.competitionCache.push(element);
-                }
+                this.competitionCache = [];
                 resolve();
             }, reject);
         });
@@ -51,8 +45,7 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
 
             this.decoratedObject.delete(id).then(() => {
                 if (found) {
-                    let index = this.competitionCache.indexOf(found);
-                    this.competitionCache.splice(index, 1);
+                    this.competitionCache = [];
                 }
                 resolve();
             }, reject);
@@ -60,7 +53,11 @@ export default class CompetitionCRUDDecorator implements ICRUD<Competition>{
     }
     readAll(): Promise<Competition[]> {
         return new Promise((resolve, reject) => {
+            if (this.competitionCache.length > 0) {
+                resolve(this.competitionCache);
+            }
             this.decoratedObject.readAll().then((competitions) => {
+                this.competitionCache = competitions;
                 resolve(competitions);
             }, reject);
         });

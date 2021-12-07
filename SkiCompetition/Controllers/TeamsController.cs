@@ -22,14 +22,24 @@ namespace SkiCompetition.Controllers
 
         // GET: api/Teams
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
+        public async Task<ActionResult<IEnumerable<DAL.ClientModels.Team>>> GetTeams()
         {
-            return await _context.Teams.ToListAsync();
+            var teams = await _context.Teams.ToListAsync();
+            var clientTeams = new List<DAL.ClientModels.Team>();
+
+            foreach (var team in teams)
+            {
+                var competitorsInTeam = await _context.Competitors.Where(c => c.TeamId == team.Id).Select(c => c.Id).ToListAsync();
+                
+                clientTeams.Add(DAL.ClientModels.Team.Create(team, competitorsInTeam));
+            }
+
+            return clientTeams;
         }
 
         // GET: api/Teams/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Team>> GetTeam(int id)
+        public async Task<ActionResult<DAL.ClientModels.Team>> GetTeam(int id)
         {
             var team = await _context.Teams.FindAsync(id);
 
@@ -38,20 +48,28 @@ namespace SkiCompetition.Controllers
                 return NotFound();
             }
 
-            return team;
+            var competitorsInTeam = await _context.Competitors.Where(c => c.TeamId == team.Id).Select(c => c.Id).ToListAsync();
+
+            return DAL.ClientModels.Team.Create(team, competitorsInTeam);
         }
 
         // PUT: api/Teams/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeam(int id, Team team)
+        public async Task<IActionResult> PutTeam(int id, DAL.ClientModels.Team team)
         {
             if (id != team.Id)
             {
                 return BadRequest();
             }
+            var dbTeam = new Team
+            {
+                Id = team.Id,
+                Name = team.Name,
+                Points = team.Points
+            };
 
-            _context.Entry(team).State = EntityState.Modified;
+            _context.Entry(dbTeam).State = EntityState.Modified;
 
             try
             {
@@ -75,9 +93,16 @@ namespace SkiCompetition.Controllers
         // POST: api/Teams
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Team>> PostTeam(Team team)
+        public async Task<ActionResult<DAL.Models.Team>> PostTeam(DAL.ClientModels.Team team)
         {
-            _context.Teams.Add(team);
+            var dbTeam = new Team
+            {
+                Id = team.Id,
+                Name = team.Name,
+                Points = team.Points
+            };
+
+            _context.Teams.Add(dbTeam);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTeam", new { id = team.Id }, team);
@@ -94,6 +119,7 @@ namespace SkiCompetition.Controllers
             }
 
             _context.Teams.Remove(team);
+
             await _context.SaveChangesAsync();
 
             return NoContent();

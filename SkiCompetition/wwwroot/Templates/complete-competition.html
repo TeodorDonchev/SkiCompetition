@@ -1,9 +1,16 @@
-﻿<label class="col-form-label">Competitors:</label>
-<ul class="list-group" data-bind="visible: competitors().length > 0, foreach: competitors()">
-    <li class="list-group-item"><span data-bind="text: $data.competitor.firstName + ' ' + $data.competitor.lastName"></span> <input data-bind="value: $data.time" type="number" name="name" value="" min="0" /> </li>
+﻿<label data-bind="visible: competitors().length > 0" class="col-form-label">Competitors:</label>
+<div data-bind="visible: competitors().length === 0">No competitors added to this competition.</div>
+<div class="list-group" data-bind="visible: competitors().length > 0, foreach: competitors()">
+    <div class="complete-competition list-group-item">
+        <span data-bind="text: $data.competitor.firstName + ' ' + $data.competitor.lastName"></span>
+        <div>
+            <input class="time-input" data-bind="value: $data.time, disable: !$data.didNotStart()" type="number" name="name" min="0" max="999" />
+            <span>DNS <input data-bind="click: $parent.changeStatus($data), value: $data.didNotStart" type="checkbox" /></span>
+        </div>
+    </div>
 
-</ul>
+</div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" data-bind="click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
+    <button type="button" class="btn btn-primary" data-bind="visible: competitors().length > 0, click:()=> flushResult()" data-bs-dismiss="modal">Save</button>
 </div> 

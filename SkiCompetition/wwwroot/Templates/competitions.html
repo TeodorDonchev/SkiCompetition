@@ -10,15 +10,8 @@
 
             </div>
             <div class="buttons">
-                <div class="search">
-                    <div class="custom input-group rounded">
-                        <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                        <button type="button" class="btn bg-color-db shadow-none">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
+               
                     <button data-bind="click:()=> createNewCompetition()" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addCompetition">COMPETITION +</button>
-                </div>
             </div>
         </div>
 
@@ -27,7 +20,7 @@
                 <div class="modal-content">
                     <!--ko with: activeCompetition()-->
                     <div class="modal-header">
-                        <h5 class="modal-title" data-bind="text: status() + ' Competition'" id="staticBackdropLabel"></h5>
+                        <h5 class="modal-title" data-bind="text: !isFinished() ? status() + ' Competition' : 'Competition'" id="staticBackdropLabel"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -38,9 +31,7 @@
                 </div>
             </div>
         </div>
-        <div data-bind="template:{name:'Card', data: {innerTemplate: 'Competition-Card-Content', data: $data.filteredCompetitions } }, visible: !isLoading()">
+        <div data-bind="template:{name:'Card', data: {innerTemplate: 'Competition-Card-Content', data: $data.filteredCompetitions } }">
         </div>
-
-
     </div>
 </div>

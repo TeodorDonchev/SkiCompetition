@@ -1,44 +1,48 @@
 ﻿<div class="d-flex justify-content-center">
-            <div class="container-fluid">
-                <div class="custom controllers d-flex justify-content-center">
-                    <div class="buttons">
-                        <div class="search">
-                            <div class="custom input-group rounded">
-                                <input type="search" id="form1" class="form-control shadow-none" placeholder="Search..." />
-                                <button type="button" class="btn bg-color-db shadow-none">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                            <button data-bind="click:()=> createNewTeam()" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addTeam">TEAM +</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="addTeam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <!--ko with: activeTeam()-->
-                            <div class="modal-header">
-                                <h5 class="modal-title" data-bind="text: isEdit?'Edit Team':'Add Team'" id="staticBackdropLabel"></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Name:</label>
-                                        <input type="text" class="form-control" placeholder="Enter name..." data-bind="value: name">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" data-bind="click:()=> flushResult()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!--/ko-->
-                        </div>
-                    </div>
-                </div>
-                <ul class="custom card-list" data-bind="template:{name:'Team-Card', foreach: teams}">
-                </ul>
+    <div class="container-fluid">
+        <div class="custom controllers d-flex justify-content-center">
+            <div class="buttons">
+                <button data-bind="click:()=> createNewTeam()" type="button" class="custom add btn rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#addTeam">TEAM +</button>
             </div>
         </div>
+
+        <div class="modal fade" id="addTeam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!--ko with: activeTeam()-->
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-bind="text: isCreate()?'Edit Team':'Add Team'" id="staticBackdropLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" placeholder="Enter name..." data-bind="value: name">
+                            </div>
+                            <!--ko if: isCreate()-->
+                            <label class="col-form-label">Competitors:</label>
+                            <div class="custom form-group" data-bind="visible: competitorsOutOfTeam().length > 0">
+                                <select class="select-competitor custom-select form-control" id="competitor-id" data-bind="options: competitorsOutOfTeam,  optionsText: (competitor) => competitor.firstName + ' ' + competitor.lastName, optionsValue: 'id', value: selectedCompetitorId">
+                                </select>
+                                <button class="competitor btn btn-primary" data-bind="click:()=> addCompetitor()">Add</button>
+                            </div>
+                            <ul class="list-group" data-bind="visible: competitorsInTeam().length > 0, foreach: competitorsInTeam()">
+                                <li class="list-group-item"><span data-bind="text: $data.firstName + ' ' + $data.lastName"></span></li>
+
+                            </ul>
+                            <!--/ko-->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" data-bind="click:()=> flushResult()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--/ko-->
+                </div>
+            </div>
+        </div>
+        <div data-bind="template:{name:'Card', data:{innerTemplate: 'Team-Card-Content', data: teams}}">
+        </div>
+    </div>
+</div>

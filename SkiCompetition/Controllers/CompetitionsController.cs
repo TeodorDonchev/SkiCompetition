@@ -33,7 +33,7 @@ namespace SkiCompetition.Controllers
             {
                 clientCompetitions.Add(DAL.ClientModels.Competition.Create(item));
             }
-
+            
             return clientCompetitions;
         }
 
@@ -68,19 +68,25 @@ namespace SkiCompetition.Controllers
             }
             if (competition.IsFinished)
             {
-                var didNotStart = competition.CompetitorRelations.Select(c => c.Time == 0);
+                var didNotStart = new List<DAL.ClientModels.CompetitionCompetitorRelation>(competition.CompetitorRelations.Where(c => c.Time == 0));
                 competition.CompetitorRelations.RemoveAll(c => c.Time == 0);
-                competition.CompetitorRelations.OrderBy(c => c.Time);
+                competition.CompetitorRelations.Sort((a, b) => a.Time - b.Time);
                 var points = 100;
                 for (int i = 0; i < competition.CompetitorRelations.Count; i++)
                 {
                     competition.CompetitorRelations[i].Place = i + 1;
                     competition.CompetitorRelations[i].Points = points;
-                    _context.Competitors.Find(competition.CompetitorRelations[i].CompetitorId).Points += points;
+                    var competitor = _context.Competitors.Find(competition.CompetitorRelations[i].CompetitorId);
+                    competitor.Points += points;
+                    _context.Teams.Find(competitor.TeamId).Points += points;
                     if (points > 0)
                     {
                         points -= 10;
                     }
+                }
+                foreach (var item in didNotStart)
+                {
+                    competition.CompetitorRelations.Add(item);
                 }
             }
 
@@ -96,7 +102,29 @@ namespace SkiCompetition.Controllers
                 });
             }
 
-            _context.Entry(DAL.Models.Competition.Create(competition)).State = EntityState.Modified;
+            //nz
+            var dbCompetition = new Competition
+            {
+                Id = competition.Id,
+                Name = competition.Name,
+                Location = competition.Location,
+                Date = competition.Date,
+                IsFinished = competition.IsFinished
+            };
+
+            var dbRelations = new List<CompetitionCompetitorRelation>();
+
+            foreach (var item in competition.CompetitorRelations)
+            {
+                dbRelations.Add(new CompetitionCompetitorRelation
+                {
+                    CompetitionId = competition.Id,
+                    CompetitorId = item.CompetitorId,
+                    Time = item.Time
+                });
+            }
+
+            _context.Entry(dbCompetition).State = EntityState.Modified;
 
             try
             {
@@ -122,9 +150,33 @@ namespace SkiCompetition.Controllers
         [HttpPost]
         public async Task<ActionResult<Competition>> PostCompetition(DAL.ClientModels.Competition competition)
         {
-            _context.Competitions.Add(DAL.Models.Competition.Create(competition));
-            await _context.SaveChangesAsync();
+            var dbCompetition = new Competition
+            {
+                Name = competition.Name,
+                Location = competition.Location,
+                Date = competition.Date,
+                IsFinished = competition.IsFinished
+            };
 
+            var dbRelations = new List<CompetitionCompetitorRelation>();
+
+
+
+            _context.Competitions.Add(dbCompetition);
+            await _context.SaveChangesAsync();
+            var addedCompetitionId = _context.Competitions.Max(c => c.Id);
+            foreach (var item in competition.CompetitorRelations)
+            {
+                _context.CompetitionCompetitorRelations.Add(new CompetitionCompetitorRelation
+                {
+                    CompetitionId = addedCompetitionId,
+                    CompetitorId = item.CompetitorId,
+                    Time = item.Time,
+                    Place = item.Place,
+                    Points = item.Points
+                });
+            }
+            await _context.SaveChangesAsync();
             return CreatedAtAction("GetCompetition", new { id = competition.Id }, competition);
         }
 

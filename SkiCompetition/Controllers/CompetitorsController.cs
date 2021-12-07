@@ -82,7 +82,16 @@ namespace SkiCompetition.Controllers
         [HttpPost]
         public async Task<ActionResult<Competitor>> PostCompetitor(DAL.ClientModels.Competitor competitor)
         {
-            _context.Competitors.Add(DAL.Models.Competitor.Create(competitor));
+            var dbCompetitor = new Competitor
+            {
+                Id = competitor.Id,
+                FirstName = competitor.FirstName,
+                LastName = competitor.LastName,
+                Sex = competitor.Sex,
+                Points = competitor.Points,
+                TeamId = competitor.TeamId
+            };
+            _context.Competitors.Add(dbCompetitor);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCompetitor", new { id = competitor.Id }, competitor);

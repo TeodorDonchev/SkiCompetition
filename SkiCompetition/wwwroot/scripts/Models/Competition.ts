@@ -60,6 +60,10 @@ class Competition extends BaseModel {
         this._location = value;
     }
 
+    public set competitorRelations(value: Array<{ competitorId: number, time: number, points: number, place: number }>) {
+        this._competitorRelations = value;
+    }
+
     public set isFinished(value: boolean) {
         this._isFinished = value;
     }

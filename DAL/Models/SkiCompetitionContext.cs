@@ -66,11 +66,17 @@ namespace DAL.Models
 
                 entity.Property(e => e.CompetitorId).HasColumnName("competitorId");
 
+                entity.Property(e => e.Place).HasColumnName("place");
+
+                entity.Property(e => e.Points).HasColumnName("points");
+
+                entity.Property(e => e.Time).HasColumnName("time");
+
                 entity.HasOne(d => d.Competition)
                     .WithMany(p => p.CompetitionCompetitorRelations)
                     .HasForeignKey(d => d.CompetitionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("CompetitionFK");
+                    .HasConstraintName("Competition_FK");
 
                 entity.HasOne(d => d.Competitor)
                     .WithMany(p => p.CompetitionCompetitorRelations)
@@ -97,16 +103,10 @@ namespace DAL.Models
 
                 entity.Property(e => e.Sex)
                     .IsRequired()
-                    .HasMaxLength(1)
+                    .HasMaxLength(6)
                     .HasColumnName("sex");
 
                 entity.Property(e => e.TeamId).HasColumnName("teamId");
-
-                entity.HasOne(d => d.Team)
-                    .WithMany(p => p.Competitors)
-                    .HasForeignKey(d => d.TeamId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Team_FK");
             });
 
             modelBuilder.Entity<Team>(entity =>
