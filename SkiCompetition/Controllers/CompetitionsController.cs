@@ -61,6 +61,13 @@ namespace SkiCompetition.Controllers
                 return BadRequest();
             }
 
+            var competitionFromDB = _context.Competitions.Single(c => c.Id == id);
+
+            if (competitionFromDB.IsFinished)
+            {
+                return StatusCode(405);
+            }
+
             var relations = _context.CompetitionCompetitorRelations.Where(x => x.CompetitionId == id);
             if (relations != null)
             {
